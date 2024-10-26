@@ -43,6 +43,7 @@ function Navbar() {
               <NavLink to="/dashboard">Dashboard</NavLink>
               <NavLink to="/retirement">Retirement</NavLink>
               <NavLink to="/income-expenses">Income/Expenses</NavLink>
+              <NavLink to="/educationresources">Education Resources</NavLink>
             </div>
           </div>
 
@@ -69,6 +70,7 @@ function Navbar() {
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/retirement">Retirement</NavLink>
             <NavLink to="/income-expenses">Income/Expenses</NavLink>
+            <NavLink to="/educationresources">Education Resources</NavLink>
           </div>
         </div>
       )}
