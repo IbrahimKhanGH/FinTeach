@@ -6,7 +6,8 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Retirement from './pages/Retirement';
 import IncomeExpenses from './pages/ExpsenseTracker';
-
+import EducationResources from './pages/EducationResources';
+import PlaidDemo from './pages/PlaidDemo';
 function App() {
   return (
     <Router>
@@ -19,6 +20,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/retirement" element={<Retirement />} />
             <Route path="/income-expenses" element={<IncomeExpenses />} />
+            <Route path="/EducationResources" element={<EducationResources/>} />
+            <Route path="/PlaidDemo" element={<PlaidDemo/>} />
           </Routes>
         </main>
       </div>
