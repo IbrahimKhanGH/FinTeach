@@ -5,6 +5,7 @@ import Navbar from './components/layout/Navbar'; // Import Navbar
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Retirement from './pages/Retirement';
+import IncomeExpenses from './pages/ExpsenseTracker';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/retirement" element={<Retirement />} />
+            <Route path="/income-expenses" element={<IncomeExpenses />} />
           </Routes>
         </main>
       </div>
