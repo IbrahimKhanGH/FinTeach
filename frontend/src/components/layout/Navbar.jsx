@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import viteLogo from '/vite.svg'; // Adjust path if needed
 
+
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -32,7 +33,7 @@ function Navbar() {
             <div className="flex-shrink-0 flex items-center">
               <img className="h-8 w-auto" src={viteLogo} alt="Logo" />
               <span className="ml-2 text-xl font-semibold text-gray-900">
-                TeachRetire
+                FinTeach
               </span>
             </div>
 
@@ -41,6 +42,7 @@ function Navbar() {
               <NavLink to="/">Home</NavLink>
               <NavLink to="/dashboard">Dashboard</NavLink>
               <NavLink to="/retirement">Retirement</NavLink>
+              <NavLink to="/income-expenses">Income/Expenses</NavLink>
             </div>
           </div>
 
@@ -66,6 +68,7 @@ function Navbar() {
             <NavLink to="/">Home</NavLink>
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/retirement">Retirement</NavLink>
+            <NavLink to="/income-expenses">Income/Expenses</NavLink>
           </div>
         </div>
       )}
