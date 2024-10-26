@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 // Simple custom Card component with refined styling
 const Card = ({ children, className = '' }) => {
   return (
-    <div className={`bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 ${className}`}>
+    <div
+      className={`bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 ${className}`}
+    >
       {children}
     </div>
   );
@@ -12,14 +14,30 @@ const Card = ({ children, className = '' }) => {
 
 // Custom Icons
 const DollarIcon = () => (
-  <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    className="h-6 w-6"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <line x1="12" y1="1" x2="12" y2="23"></line>
     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
   </svg>
 );
 
 const ChartIcon = () => (
-  <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    className="h-6 w-6"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <line x1="18" y1="20" x2="18" y2="10"></line>
     <line x1="12" y1="20" x2="12" y2="4"></line>
     <line x1="6" y1="20" x2="6" y2="14"></line>
@@ -27,23 +45,47 @@ const ChartIcon = () => (
 );
 
 const ShieldIcon = () => (
-  <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    className="h-6 w-6"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
   </svg>
 );
 
 const CalculatorIcon = () => (
-  <svg className="h-32 w-32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="4" y="2" width="16" height="20" rx="2"/>
-    <line x1="8" x2="16" y1="6" y2="6"/>
-    <line x1="8" x2="16" y1="10" y2="10"/>
-    <line x1="8" x2="16" y1="14" y2="14"/>
-    <line x1="8" x2="16" y1="18" y2="18"/>
+  <svg
+    className="h-32 w-32"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect x="4" y="2" width="16" height="20" rx="2" />
+    <line x1="8" x2="16" y1="6" y2="6" />
+    <line x1="8" x2="16" y1="10" y2="10" />
+    <line x1="8" x2="16" y1="14" y2="14" />
+    <line x1="8" x2="16" y1="18" y2="18" />
   </svg>
 );
 
 const CheckIcon = () => (
-  <svg className="h-5 w-5 text-green-500 mr-2" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+  <svg
+    className="h-5 w-5 text-green-500 mr-2"
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
     <path d="M5 13l4 4L19 7"></path>
   </svg>
 );
@@ -67,24 +109,25 @@ export default function Home() {
                     Take Control of Your Financial Future
                   </h2>
                   <p className="text-lg text-white/90 mb-6">
-                    Smart budgeting, retirement planning, and investment tools designed exclusively for educators.
+                    Smart budgeting, retirement planning, and investment tools designed exclusively
+                    for educators.
                   </p>
                   <div className="flex space-x-4 justify-center lg:justify-start">
-                    <Link 
-                      to="/dashboard" 
+                    <Link
+                      to="/dashboard"
                       className="inline-flex items-center px-6 py-3 bg-white text-[#025742] rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm"
                     >
                       Get Started
                     </Link>
-                    <Link 
-                      to="/retirement" 
+                    <Link
+                      to="/retirement"
                       className="inline-flex items-center px-6 py-3 border border-white/30 bg-white/10 text-white rounded-lg font-semibold hover:bg-white/20 transition-colors"
                     >
                       Learn More
                     </Link>
                   </div>
                 </div>
-                
+
                 <div className="hidden lg:block">
                   <div className="bg-white/10 rounded-xl p-6">
                     <div className="aspect-video bg-white/5 rounded-lg flex items-center justify-center backdrop-blur-sm">
@@ -156,22 +199,56 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Updated Features Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <Card className="col-span-2">
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Budget Categories</h3>
-              <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">Key Features</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { name: 'Classroom Supplies', amount: '$120.00', color: 'bg-blue-500' },
-                  { name: 'Technology', amount: '$85.50', color: 'bg-green-500' },
-                  { name: 'Books', amount: '$80.00', color: 'bg-purple-500' }
-                ].map((category, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className={`w-3 h-3 ${category.color} rounded-full`}></div>
-                      <span className="ml-2 text-sm font-medium">{category.name}</span>
+                  {
+                    title: 'Personalized Retirement Planning',
+                    description: 'Customized plans based on your unique goals.',
+                    icon: '/icons/retirement-planning.svg',
+                  },
+                  {
+                    title: 'Pension Calculator',
+                    description: 'Estimate your future pension benefits easily.',
+                    icon: '/icons/pension-calculator.svg',
+                  },
+                  {
+                    title: 'Budget Tracking',
+                    description: 'Monitor and categorize your expenses effortlessly.',
+                    icon: '/icons/budget-tracking.svg',
+                  },
+                  {
+                    title: 'Investment Portfolio Management',
+                    description: 'Optimize your 403(b) and other investments.',
+                    icon: '/icons/investment-management.svg',
+                  },
+                  {
+                    title: 'Debt Management Solutions',
+                    description: 'Strategies to pay off student loans faster.',
+                    icon: '/icons/debt-management.svg',
+                  },
+                  {
+                    title: 'Tax Deduction Assistance',
+                    description: 'Maximize your savings with tax-efficient strategies.',
+                    icon: '/icons/tax-planning.svg',
+                  },
+                ].map((feature, index) => (
+                  <div key={index} className="flex">
+                    <div className="flex-shrink-0">
+                      {/*<img
+                        src={feature.icon}
+                        alt={feature.title}
+                        className="h-8 w-8 text-green-500"
+                      />*/}
                     </div>
-                    <span className="text-sm text-gray-500">{category.amount}</span>
+                    <div className="ml-4">
+                      <h4 className="text-md font-semibold text-gray-900">{feature.title}</h4>
+                      <p className="text-sm text-gray-600">{feature.description}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -180,21 +257,21 @@ export default function Home() {
 
           <Card>
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Features</h3>
-              <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Why Choose Us?</h3>
+              <ul className="space-y-4">
                 {[
-                  'Budget Tracking',
-                  'Retirement Planning',
-                  'TRS Integration',
-                  'Investment Advice',
-                  'Tax Planning'
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-center text-sm text-gray-600">
+                  'Tailored for Texas Teachers',
+                  'Secure and Confidential',
+                  'Easy-to-Use Interface',
+                  'Expert Financial Advice',
+                  'Community Support',
+                ].map((benefit, index) => (
+                  <li key={index} className="flex items-start text-sm text-gray-600">
                     <CheckIcon />
-                    {feature}
-                  </div>
+                    <span>{benefit}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </Card>
         </div>
@@ -207,7 +284,7 @@ export default function Home() {
             <div className="relative">
               {/* Background gradient with opacity */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#025742] to-emerald-800 opacity-95"></div>
-              
+
               {/* Content */}
               <div className="relative p-8 md:p-12 lg:p-16 text-center">
                 <h2 className="text-3xl font-bold mb-4 text-white drop-shadow-sm">
@@ -216,8 +293,8 @@ export default function Home() {
                 <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto font-medium">
                   Join thousands of Texas teachers who are securing their financial future.
                 </p>
-                <Link 
-                  to="/dashboard" 
+                <Link
+                  to="/dashboard"
                   className="inline-flex items-center px-8 py-4 bg-white text-[#025742] rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm"
                 >
                   Create Your Account

@@ -1,12 +1,14 @@
 // src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
-import Navbar from "./components/layout/Navbar";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Retirement from "./pages/Retirement";
-import IncomeExpenses from "./pages/ExpsenseTracker";
-import EducationResources from "./pages/EducationResources";
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import Navbar from './components/layout/Navbar'; // Import Navbar
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Retirement from './pages/Retirement';
+import IncomeExpenses from './pages/ExpsenseTracker';
+import EducationResources from './pages/EducationResources';
+import PlaidDemo from './pages/PlaidDemo';
 
 function App() {
   return (
@@ -19,10 +21,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/retirement" element={<Retirement />} />
             <Route path="/income-expenses" element={<IncomeExpenses />} />
-            <Route
-              path="/educationresources"
-              element={<EducationResources />}
-            />
+            <Route path="/EducationResources" element={<EducationResources/>} />
+            <Route path="/PlaidDemo" element={<PlaidDemo/>} />
           </Routes>
         </main>
       </div>
