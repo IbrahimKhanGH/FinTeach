@@ -41,6 +41,7 @@ function Navbar() {
               <NavLink to="/retirement">Retirement</NavLink>
               <NavLink to="/income-expenses">Income/Expenses</NavLink>
               <NavLink to="/educationresources">Education Resources</NavLink>
+              <NavLink to="/PlaidDemo">Plaid Demo</NavLink>
             </div>
           </div>
 
