@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Retirement from './pages/Retirement';
 import IncomeExpenses from './pages/ExpsenseTracker';
 import EducationResources from './pages/EducationResources';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/retirement" element={<Retirement />} />
             <Route path="/income-expenses" element={<IncomeExpenses />} />
             <Route path="/EducationResources" element={<EducationResources/>} />
+            <Route path="/settings" element={<Settings/>} />
           </Routes>
         </main>
       </div>
