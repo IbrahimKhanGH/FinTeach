@@ -1,7 +1,9 @@
 // src/components/layout/Navbar.jsx
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import viteLogo from "/vite.svg";
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import viteLogo from '/fidelity.svg'; // Adjust path if needed
+
+
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,6 +44,7 @@ function Navbar() {
               <NavLink to="/income-expenses">Income/Expenses</NavLink>
               <NavLink to="/educationresources">Education Resources</NavLink>
               <NavLink to="/PlaidDemo">Plaid Demo</NavLink>
+              <NavLink to="/settings">Settings</NavLink>
             </div>
           </div>
 
@@ -77,6 +80,7 @@ function Navbar() {
             <NavLink to="/retirement">Retirement</NavLink>
             <NavLink to="/income-expenses">Income/Expenses</NavLink>
             <NavLink to="/educationresources">Education Resources</NavLink>
+            <NavLink to="/settings">Settings</NavLink>
           </div>
         </div>
       )}

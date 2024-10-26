@@ -9,6 +9,8 @@ import Retirement from './pages/Retirement';
 import IncomeExpenses from './pages/ExpsenseTracker';
 import EducationResources from './pages/EducationResources';
 import PlaidDemo from './pages/PlaidDemo';
+import Settings from './pages/Settings';
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
             <Route path="/income-expenses" element={<IncomeExpenses />} />
             <Route path="/EducationResources" element={<EducationResources/>} />
             <Route path="/PlaidDemo" element={<PlaidDemo/>} />
+            <Route path="/settings" element={<Settings/>} />
           </Routes>
         </main>
       </div>
