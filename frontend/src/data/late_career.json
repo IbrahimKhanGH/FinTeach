@@ -1,0 +1,125 @@
+{
+    "personal_info": {
+      "age": 60,
+      "years_of_service": 35,
+      "current_salary": 65000,
+      "monthly_net_income": 4500
+    },
+    "bank_accounts": [
+      {
+        "institution": "Wells Fargo",
+        "account_type": "Checking",
+        "account_number": "3333444455556666",
+        "balance": 5000
+      },
+      {
+        "institution": "Wells Fargo",
+        "account_type": "Savings",
+        "account_number": "6666555544443333",
+        "balance": 20000
+      }
+    ],
+    "credit_cards": [
+      {
+        "institution": "Citi",
+        "card_name": "Double Cash",
+        "account_number": "7777888899990000",
+        "balance": 0,
+        "credit_limit": 20000,
+        "interest_rate": 0.1599,
+        "minimum_payment": 0,
+        "due_date": "2023-11-10"
+      }
+    ],
+    "loans": [
+      {
+        "institution": "Wells Fargo",
+        "loan_type": "Mortgage",
+        "account_number": "MTG654321",
+        "original_balance": 200000,
+        "current_balance": 0, 
+        "interest_rate": 0.035,
+        "monthly_payment": 0,
+        "due_date": null
+      },
+      {
+        "institution": "Honda Financial",
+        "loan_type": "Auto Loan",
+        "account_number": "AUTO654321",
+        "original_balance": 35000,
+        "current_balance": 10000,
+        "interest_rate": 0.03,
+        "monthly_payment": 500,
+        "due_date": "2023-11-15"
+      }
+    ],
+    "retirement_accounts": [
+      {
+        "institution": "TRS",
+        "account_type": "Pension",
+        "account_number": "TRS111222",
+        "balance": 175175, 
+        "contribution_rate": 0.077
+      },
+      {
+        "institution": "Fidelity",
+        "account_type": "403(b)",
+        "account_number": "403B654321",
+        "balance": 200000,
+        "contribution_rate": 0.06,
+        "monthly_contribution": 325
+      },
+      {
+        "institution": "Vanguard",
+        "account_type": "Roth IRA",
+        "account_number": "IRA654321",
+        "balance": 100000,
+        "contribution_rate": 0.05,
+        "monthly_contribution": 250
+      }
+    ],
+    "investments": [
+      {
+        "institution": "Edward Jones",
+        "account_type": "Brokerage",
+        "account_number": "EJ654321",
+        "balance": 50000,
+        "holdings": [
+          {
+            "symbol": "Vanguard Total Bond Market Index Fund",
+            "quantity": 1000,
+            "current_value": 50000
+          }
+        ]
+      },
+      {
+        "institution": "Real Estate",
+        "account_type": "Investment Property",
+        "property_address": "123 Main St, Dallas, TX",
+        "current_value": 250000,
+        "mortgage_balance": 0,
+        "monthly_rental_income": 1500
+      }
+    ],
+    "expenses": {
+      "housing": 500, 
+      "utilities": 250,
+      "transportation": 400,
+      "food": 700,
+      "insurance": 300,
+      "healthcare": 400,
+      "entertainment": 400,
+      "miscellaneous": 350,
+      "total_monthly_expenses": 3300
+    },
+    "liabilities": {
+      "total_debt": 10000, 
+      "monthly_debt_payments": 500
+    },
+    "assets": {
+      "total_assets": 630000, 
+      "home_equity": 300000,
+      "net_worth": 920000 
+    }
+  }
+  

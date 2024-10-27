@@ -1,0 +1,102 @@
+{
+    "personal_info": {
+      "age": 25,
+      "years_of_service": 3,
+      "current_salary": 45000,
+      "monthly_net_income": 3000
+    },
+    "bank_accounts": [
+      {
+        "institution": "Chase Bank",
+        "account_type": "Checking",
+        "account_number": "123456789",
+        "balance": 1500
+      },
+      {
+        "institution": "Chase Bank",
+        "account_type": "Savings",
+        "account_number": "987654321",
+        "balance": 3000
+      }
+    ],
+    "credit_cards": [
+      {
+        "institution": "Capital One",
+        "card_name": "Quicksilver",
+        "account_number": "1111222233334444",
+        "balance": 500,
+        "credit_limit": 5000,
+        "interest_rate": 0.1999,
+        "minimum_payment": 25,
+        "due_date": "2023-11-15"
+      }
+    ],
+    "loans": [
+      {
+        "institution": "FedLoan Servicing",
+        "loan_type": "Student Loan",
+        "account_number": "SL12345678",
+        "original_balance": 30000,
+        "current_balance": 25000,
+        "interest_rate": 0.045,
+        "monthly_payment": 250,
+        "due_date": "2023-11-01"
+      }
+    ],
+    "retirement_accounts": [
+      {
+        "institution": "TRS",
+        "account_type": "Pension",
+        "account_number": "TRS123456",
+        "balance": 10395, 
+        "contribution_rate": 0.077
+      },
+      {
+        "institution": "Vanguard",
+        "account_type": "Roth IRA",
+        "account_number": "IRA987654",
+        "balance": 5000,
+        "contribution_rate": 0.04,
+        "monthly_contribution": 150
+      }
+    ],
+    "investments": [
+      {
+        "institution": "Robinhood",
+        "account_type": "Brokerage",
+        "account_number": "RB123456",
+        "balance": 2000,
+        "holdings": [
+          {
+            "symbol": "AAPL",
+            "quantity": 10,
+            "current_value": 1500
+          },
+          {
+            "symbol": "TSLA",
+            "quantity": 1,
+            "current_value": 500
+          }
+        ]
+      }
+    ],
+    "expenses": {
+      "housing": 1000,
+      "utilities": 150,
+      "transportation": 300,
+      "food": 400,
+      "insurance": 100,
+      "entertainment": 200,
+      "miscellaneous": 150,
+      "total_monthly_expenses": 2300
+    },
+    "liabilities": {
+      "total_debt": 25500,
+      "monthly_debt_payments": 275
+    },
+    "assets": {
+      "total_assets": 11500,
+      "net_worth": -14000 
+    }
+  }
+  
