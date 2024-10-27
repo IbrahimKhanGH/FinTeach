@@ -2,19 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
 
-  const [credentials, setCredentials] = useState({
-    username: '',
-    password: '',
-  });
-
-  const handleLoginChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials(prevState => ({ ...prevState, [name]: value }));
   };
 
-  const handleLogin = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const { username, password } = credentials;
 
     if (username && password) {
@@ -25,7 +22,8 @@ const Login = () => {
         storedUser.username === username &&
         storedUser.password === password
       ) {
-        navigate('/dashboard'); // Redirects to Dashboard component
+        // Redirect to CareerStageSelection
+        navigate('/career-stage-selection');
       } else {
         alert('Invalid username or password');
       }
@@ -55,21 +53,15 @@ const Login = () => {
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        <button
-          className="w-full py-3 my-2 bg-white text-blue-900 border border-gray-300 rounded-lg hover:bg-gray-100"
-          onClick={() => setShowLoginForm(!showLoginForm)}
-        >
-          Log In
-        </button>
 
-        {showLoginForm && (
+        <form onSubmit={handleSubmit}>
           <div className="mt-6 space-y-4">
             <div className="relative">
               <input
                 type="text"
                 name="username"
                 value={credentials.username}
-                onChange={handleLoginChange}
+                onChange={handleChange}
                 placeholder=" "
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
               />
@@ -85,7 +77,7 @@ const Login = () => {
                 type="password"
                 name="password"
                 value={credentials.password}
-                onChange={handleLoginChange}
+                onChange={handleChange}
                 placeholder=" "
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
               />
@@ -97,13 +89,13 @@ const Login = () => {
               </label>
             </div>
             <button
+              type="submit"
               className="w-full py-3 mt-4 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800"
-              onClick={handleLogin}
             >
               Log In
             </button>
           </div>
-        )}
+        </form>
       </div>
     </div>
   );

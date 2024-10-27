@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import fidelityLogo from "/fidelity.svg";
-import Chatbox from "../chatbot/chatbox"; // Import the Chatbox component
-import { User, LogOut, Settings, MessageSquare } from "lucide-react"; // MessageSquare icon for the chat button
+import Chatbox from "../chatbot/chatbox";
+import { User, LogOut, Settings, MessageSquare } from "lucide-react";
 import greenpiggy from "/Green Piggy Bank with Graduation Cap.png";
-
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [chatboxOpen, setChatboxOpen] = useState(false); // State to control Chatbox visibility
+  const [chatboxOpen, setChatboxOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -62,15 +61,16 @@ function Navbar() {
             </div>
           </div>
 
+
           {/* Desktop Navigation, Chat button, and Profile menu */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/retirement">Retirement</NavLink>
             <NavLink to="/income-expenses">Income/Expenses</NavLink>
             <NavLink to="/educationresources">Education Resources</NavLink>
-            <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-            <NavLink to="/settings">Settings</NavLink>
-            
+          {/* Chat button and profile menu */}
+          <div className="flex items-center">
+
             {/* Chat button */}
             <button
               onClick={() => setChatboxOpen(!chatboxOpen)}
@@ -92,29 +92,29 @@ function Navbar() {
             </button>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex items-center sm:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-fidelity-green"
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
+            {/* Profile dropdown */}
+            {profileMenuOpen && (
+              <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Link
+                  to="/settings"
+                  className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => setProfileMenuOpen(false)}
+                >
+                  <Settings className="mr-3 h-5 w-5" />
+                  Profile Settings
+                </Link>
+                <button
+                  onClick={() => {
+                    setProfileMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                >
+                  <LogOut className="mr-3 h-5 w-5" />
+                  Logout
+                </button>
+              </div>
+            )}
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
@@ -128,11 +128,12 @@ function Navbar() {
               <NavLink to="/plaid-demo">Plaid Demo</NavLink>
               <NavLink to="/settings">Settings</NavLink>
             </div>
-          </div>
-        )}
-      </div>
 
-      {/* Render Chatbox component when chatboxOpen is true */}
+          </div>
+        </div>
+      )}
+
+      {/* Chatbox Component */}
       {chatboxOpen && <Chatbox />}
     </nav>
   );

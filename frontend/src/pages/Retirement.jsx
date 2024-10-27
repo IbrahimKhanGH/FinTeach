@@ -1,5 +1,6 @@
 // src/pages/Retirement.jsx
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom'; // Add this import
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -37,8 +38,10 @@ ChartJS.register(
 );
 
 function Retirement() {
-  // Career Stage Selection
-  const [careerStage, setCareerStage] = useState('early');
+  const navigate = useNavigate(); // Add this line
+  const [careerStage, setCareerStage] = useState(() => {
+    return localStorage.getItem('careerStage') || 'early';
+  });
 
   // Initial Data State
   const [initialData, setInitialData] = useState({});
@@ -68,6 +71,15 @@ function Retirement() {
 
   // Effect to update initial data based on career stage
   useEffect(() => {
+    // Check if careerStage is set in localStorage
+    const storedCareerStage = localStorage.getItem('careerStage');
+    if (!storedCareerStage) {
+      // If not set, redirect to CareerStageSelection
+      navigate('/career-stage-selection');
+    } else {
+      setCareerStage(storedCareerStage);
+    }
+
     let data;
     switch (careerStage) {
       case 'early':
@@ -133,7 +145,7 @@ function Retirement() {
     setTotalContribution(
       initData.trs + initData.four03b + initData.ira + initData.otherInvestments
     );
-  }, [careerStage]);
+  }, [careerStage, navigate]);
 
   // Function to reset values to initial data
   const resetToInitialData = () => {
@@ -456,38 +468,23 @@ function Retirement() {
   };
 
   return (
-    <div className="  min-h-screen">
+    <div className="min-h-screen">
       <div className="container mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold text-center mb-2 text-[#025742]">Retirement Planning</h1>
         <p className="text-lg text-center mb-8 text-gray-600">Plan your financial future with confidence</p>
 
-        {/* Career Stage Selection */}
-        <div className="flex justify-center mb-6">
-          <div className="flex items-center space-x-4">
-            <label htmlFor="careerStage" className="font-semibold text-gray-700">Select Career Stage:</label>
-            <select
-              id="careerStage"
-              value={careerStage}
-              onChange={(e) => setCareerStage(e.target.value)}
-              className="border rounded-md px-3 py-2 text-sm"
-            >
-              <option value="early">Early Career</option>
-              <option value="middle">Middle Career</option>
-              <option value="late">Late Career</option>
-            </select>
-            <button
-              onClick={resetToInitialData}
-              className="ml-4 bg-[#025742] text-white px-4 py-2 rounded-md hover:bg-[#013D2C] transition"
-            >
-              Reset to My Info
-            </button>
-          </div>
-        </div>
-
         <div className="flex flex-col lg:flex-row gap-8 mb-8">
           {/* Left column: Your Information */}
           <div className="bg-white p-6 rounded-lg shadow lg:w-1/3">
-            <h2 className="text-2xl font-semibold mb-4 text-[#025742]">Your Information</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-semibold text-[#025742]">Your Information</h2>
+              <button
+                onClick={resetToInitialData}
+                className="bg-[#025742] text-white px-3 py-1 text-sm rounded-md hover:bg-[#013D2C] transition"
+              >
+                Reset to My Info
+              </button>
+            </div>
 
             <div className="space-y-4">
               <div>
