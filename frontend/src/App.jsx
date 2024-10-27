@@ -10,6 +10,7 @@ import IncomeExpenses from './pages/ExpsenseTracker';
 import EducationResources from './pages/EducationResources';
 import PlaidDemo from './pages/PlaidDemo';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/EducationResources" element={<EducationResources/>} />
             <Route path="/PlaidDemo" element={<PlaidDemo/>} />
             <Route path="/settings" element={<Settings/>} />
+            <Route path="/login" element={<Login/>} />
           </Routes>
         </main>
       </div>

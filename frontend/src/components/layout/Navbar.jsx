@@ -50,6 +50,8 @@ function Navbar() {
               <NavLink to="/educationresources">Education Resources</NavLink>
               <NavLink to="/PlaidDemo">Plaid Demo</NavLink>
               <NavLink to="/settings">Settings</NavLink>
+              <NavLink to="/login">Login</NavLink>
+
             </div>
           </div>
 
