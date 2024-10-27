@@ -99,7 +99,7 @@ export default function Home() {
           <div className="bg-gradient-to-r from-[#025742] to-emerald-800 rounded-2xl overflow-hidden">
             <div className="px-6 lg:px-12 py-12 lg:py-16">
               <div className="text-center max-w-3xl mx-auto mb-8">
-                <h1 className="text-4xl font-bold mb-2 text-white">EduBudget Texas</h1>
+                <h1 className="text-4xl font-bold mb-2 text-white">FinTeach</h1>
                 <p className="text-lg text-white/90">Financial Planning for Texas Teachers</p>
               </div>
 
@@ -131,7 +131,7 @@ export default function Home() {
                 <div className="hidden lg:block">
                   <div className="bg-white/10 rounded-xl p-6">
                     <div className="aspect-video bg-white/5 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                      <CalculatorIcon className="text-white/80" />
+                    <img src="src/assets/teacher.svg" alt="Teacher" className="h-50 w-50 text-white/80" />
                     </div>
                   </div>
                 </div>
