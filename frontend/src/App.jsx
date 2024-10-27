@@ -19,7 +19,7 @@ function App() {
   const isLandingPage = landingPaths.includes(location.pathname);
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-50">
+    <div className="flex flex-col min-h-screen w-full bg-cream">
       {/* Conditionally render NavbarLanding or Navbar */}
       {isLandingPage ? <NavbarLanding /> : <Navbar />}
 
