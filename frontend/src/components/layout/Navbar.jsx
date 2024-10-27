@@ -17,7 +17,7 @@ function Navbar() {
     return (
       <Link
         to={to}
-        className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors duration-150 ease-in-out ${
+        className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors duration-150 ease-in-out focus:outline-none focus:bg-opacity-10 focus:bg-fidelity-green ${
           isActive
             ? "bg-fidelity-green text-white"
             : "text-gray-700 hover:bg-gray-100"

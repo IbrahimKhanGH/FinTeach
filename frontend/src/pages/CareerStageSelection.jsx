@@ -16,7 +16,7 @@ const CareerStageSelection = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Select Your Career Stage</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">CHOOSE DEMO CAREER STAGE</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="careerStage" className="block text-sm font-medium text-gray-700 mb-2">
