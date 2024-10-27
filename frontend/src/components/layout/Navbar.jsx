@@ -55,26 +55,26 @@ function Navbar() {
                     marginBottom: "4px",
                     marginLeft: "3px",
                   }}
-                  className="flex w-full items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
                 >
+                  FinTeach
+                </div>
               </Link>
-            {/* Desktop Navigation */}
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <NavLink to="/dashboard">Dashboard</NavLink>
-              <NavLink to="/retirement">Retirement</NavLink>
-              <NavLink to="/income-expenses">Income/Expenses</NavLink>
-              <NavLink to="/educationresources">Education Resources</NavLink>
-              <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-              <NavLink to="/settings">Settings</NavLink>
             </div>
           </div>
 
-          {/* Chat button and profile menu */}
-          <div className="flex items-center">
+          {/* Desktop Navigation, Chat button, and Profile menu */}
+          <div className="hidden sm:flex sm:items-center sm:space-x-8">
+            <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink to="/retirement">Retirement</NavLink>
+            <NavLink to="/income-expenses">Income/Expenses</NavLink>
+            <NavLink to="/educationresources">Education Resources</NavLink>
+            <NavLink to="/plaid-demo">Plaid Demo</NavLink>
+            <NavLink to="/settings">Settings</NavLink>
+            
             {/* Chat button */}
             <button
               onClick={() => setChatboxOpen(!chatboxOpen)}
-              className="mr-4 text-gray-700 hover:text-fidelity-green focus:outline-none"
+              className="text-gray-700 hover:text-fidelity-green focus:outline-none"
               aria-label="Chat with Assistant"
             >
               <MessageSquare className="h-6 w-6" />
@@ -90,27 +90,29 @@ function Navbar() {
                 <User className="h-6 w-6 text-gray-500" />
               </div>
             </button>
+          </div>
 
-            {/* Profile dropdown */}
-            {profileMenuOpen && (
-              <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <Link
-                  to="/settings"
-                  className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setProfileMenuOpen(false)}
-                >
-                  <Settings className="mr-3 h-5 w-5" />
-                  Profile Settings
-                </Link>
-                <button
-                  onClick={() => {
-                    setProfileMenuOpen(false);
-                    handleLogout();
-                  <LogOut className="mr-3 h-5 w-5" />
-                  Logout
-                </button>
-              </div>
-            )}
+          {/* Mobile menu button */}
+          <div className="flex items-center sm:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-fidelity-green"
+            >
+              <span className="sr-only">Open main menu</span>
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -124,6 +126,7 @@ function Navbar() {
               <NavLink to="/income-expenses">Income/Expenses</NavLink>
               <NavLink to="/educationresources">Education Resources</NavLink>
               <NavLink to="/plaid-demo">Plaid Demo</NavLink>
+              <NavLink to="/settings">Settings</NavLink>
             </div>
           </div>
         )}

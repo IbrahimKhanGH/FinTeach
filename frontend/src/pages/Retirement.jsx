@@ -21,6 +21,9 @@ import earlyCareerData from "../data/early_career.json";
 import middleCareerData from "../data/middle_career.json";
 import lateCareerData from "../data/late_career.json";
 
+// At the top of the file, add this import:
+import Chatbox from "../components/chatbot/chatbox"; // Import Chatbox component
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -690,6 +693,9 @@ function Retirement() {
           </div>
         </div>
       </div>
+
+      {/* Add this line at the end of your return statement, just before the closing div tags */}
+      <Chatbox careerStage={careerStage} /> {/* Pass careerStage as a prop */}
     </div>
   );
 }

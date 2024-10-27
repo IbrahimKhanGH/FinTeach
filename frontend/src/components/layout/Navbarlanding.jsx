@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import fidelityLogo from "/fidelity.svg";
-import greenpig from "/Green Piggy Bank with Graduation Cap.png";
+import { User } from "lucide-react";
+import greenpiggy from "/Green Piggy Bank with Graduation Cap.png";
 
 function NavbarLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -12,13 +12,17 @@ function NavbarLanding() {
     return (
       <Link
         to={to}
-        className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+        className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors duration-150 ease-in-out ${
           isActive
-            ? "border-fidelity-green text-gray-900"
-            : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+            ? "bg-fidelity-green text-white"
+            : "text-gray-700 hover:bg-gray-100"
         }`}
+        style={{
+          transform: "skew(-5deg)",
+          letterSpacing: "0.02em",
+        }}
       >
-        {children}
+        <span style={{ transform: "skew(5deg)" }}>{children}</span>
       </Link>
     );
   };
@@ -27,30 +31,39 @@ function NavbarLanding() {
     <nav className="bg-white shadow-sm">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
+          {/* Logo and FinTeach title */}
           <div className="flex items-center">
-            <img className="h-8 w-auto" src={greenpig} alt="Logo" />
-            {/* Link component wrapping FinTeach for routing */}
-            <Link to="/" className="ml-2">
-              <div
-                className="inline-block font-sans text-4xl font-bold tracking-tight"
-                style={{
-                  color: "#5aa832", // Fidelity's signature green color
-                  transform: "skew(-10deg)", // Slight forward slant
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                FinTeach
-              </div>
-            </Link>
+            <div className="flex-shrink-0 flex items-center">
+              <Link to="/">
+                <img className="h-12 w-auto" src={greenpiggy} alt="Logo" />
+              </Link>
+              <Link to="/">
+                <div
+                  className="inline-block font-sans text-4xl font-bold tracking-tight"
+                  style={{
+                    color: "#5aa832",
+                    transform: "skew(-10deg)",
+                    letterSpacing: "-0.02em",
+                    marginBottom: "4px",
+                    marginLeft: "3px",
+                  }}
+                >
+                  FinTeach
+                </div>
+              </Link>
+            </div>
           </div>
 
-          {/* Desktop Links for Login and Sign Up */}
-          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+          {/* Desktop Navigation and Profile Icon */}
+          <div className="hidden sm:flex sm:items-center sm:space-x-8">
             <NavLink to="/login">Login</NavLink>
             <NavLink to="/signup">Sign Up</NavLink>
+            <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+              <User className="h-6 w-6 text-gray-500" />
+            </div>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile menu button */}
           <div className="flex items-center sm:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -73,17 +86,17 @@ function NavbarLanding() {
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/signup">Sign Up</NavLink>
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              <NavLink to="/login">Login</NavLink>
+              <NavLink to="/signup">Sign Up</NavLink>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </nav>
   );
 }

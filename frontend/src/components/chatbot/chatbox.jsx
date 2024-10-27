@@ -1,9 +1,13 @@
-// src/components/Chatbox.jsx
+// src/components/chatbot/chatbox.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import earlyCareerData from '../../data/early_career.json';
+import middleCareerData from '../../data/middle_career.json';
+import lateCareerData from '../../data/late_career.json';
 
-const Chatbox = () => {
+const Chatbox = ({ careerStage }) => { // Accept careerStage as a prop
   const [isOpen, setIsOpen] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false); // New state for maximize/minimize
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
@@ -14,6 +18,22 @@ const Chatbox = () => {
 
   useEffect(scrollToBottom, [messages]);
 
+  // Determine which data to use based on careerStage
+  let data;
+  switch (careerStage) {
+    case 'early':
+      data = earlyCareerData;
+      break;
+    case 'middle':
+      data = middleCareerData;
+      break;
+    case 'late':
+      data = lateCareerData;
+      break;
+    default:
+      data = earlyCareerData;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -22,13 +42,15 @@ const Chatbox = () => {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInput('');
 
+    const assistantPrompt = `You are a helpful assistant specializing in ${careerStage} career financial planning. Here is relevant data: ${JSON.stringify(data)}`;
+
     try {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
           model: 'gpt-3.5-turbo',
           messages: [
-            { role: 'system', content: 'You are a helpful assistant for Fidelity FinTech, specializing in budget and retirement planning. Welcome users and offer to help with financial planning, budgeting, and retirement strategies.' },
+            { role: 'system', content: assistantPrompt },
             ...messages,
             userMessage,
           ],
@@ -65,10 +87,35 @@ const Chatbox = () => {
         </button>
       )}
       {isOpen && (
-        <div className="w-80 h-96 bg-white rounded-lg shadow-lg flex flex-col">
+        <div
+          className={`${
+            isMaximized ? 'w-11/12 h-5/6' : 'w-80 h-96'
+          } bg-white rounded-lg shadow-lg flex flex-col fixed bottom-5 right-5 z-50 transition-all duration-200`}
+        >
           <div className="bg-green-600 text-white p-3 rounded-t-lg flex justify-between items-center">
-            <h3 className="text-lg font-semibold">FinTeach Assistant</h3>
-            <button onClick={() => setIsOpen(false)} className="text-white text-xl font-bold hover:text-gray-200">
+            <div className="flex items-center space-x-2">
+              {/* Maximize/Minimize Button */}
+              <button
+                onClick={() => setIsMaximized(!isMaximized)}
+                className="text-white text-lg font-bold hover:text-gray-200"
+              >
+                {isMaximized ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9h6m-6 6h6" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                )}
+              </button>
+              <h3 className="text-lg font-semibold">FinTeach Assistant</h3>
+            </div>
+            {/* Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-white text-xl font-bold hover:text-gray-200"
+            >
               ×
             </button>
           </div>
