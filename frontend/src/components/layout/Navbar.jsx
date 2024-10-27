@@ -1,9 +1,7 @@
 // src/components/layout/Navbar.jsx
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import viteLogo from '/fidelity.svg'; // Adjust path if needed
-
-
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import viteLogo from "/fidelity.svg"; // Adjust path if needed
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,9 +30,16 @@ function Navbar() {
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
               <img className="h-8 w-auto" src={viteLogo} alt="Logo" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">
+              <div
+                className="inline-block font-sans text-4xl font-bold tracking-tight"
+                style={{
+                  color: "#5aa832", // Fidelity's signature green color
+                  transform: "skew(-10deg)", // Slight forward slant
+                  letterSpacing: "-0.02em",
+                }}
+              >
                 FinTeach
-              </span>
+              </div>
             </div>
 
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
