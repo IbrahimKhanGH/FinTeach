@@ -11,6 +11,7 @@ export default {
           'green': '#025742',
           'navy': '#1A1F3D',
         },
+        'cream': '#F8F7F2', // Updated to a softer, more neutral cream color
       },
     },
   },

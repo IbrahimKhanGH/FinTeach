@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import fidelityLogo from "/fidelity.svg";
+import greenpiggy from "/Green Piggy Bank with Graduation Cap.png";
 import { User, LogOut, Settings } from "lucide-react";
 
 function Navbar() {
@@ -39,7 +40,7 @@ function Navbar() {
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/">
-                <img className="h-12 w-auto" src={fidelityLogo} alt="Logo" />
+                <img className="h-12 w-auto" src={greenpiggy} alt="Logo" />
               </Link>
               <Link to="/">
                 <div

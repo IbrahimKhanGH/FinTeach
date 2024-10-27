@@ -7,10 +7,11 @@
       "risk_tolerance": "Moderate"
     },
     "financial_info": {
-      "current_salary": 55000,
-      "monthly_net_income": 3800,
+      "current_salary": 52000,
+      "monthly_net_income": 3600,
       "monthly_expenses": 3400,
       "current_savings": 25000,
+      "retirement_accounts": 150000,
       "monthly_investments": 600,
       "monthly_contributions": {
         "TRS": 353,         
@@ -29,7 +30,7 @@
       {
         "date": "2023-10-31",
         "description": "Direct Deposit - School District",
-        "amount": 3200,
+        "amount": 1800,
         "type": "credit",
         "category": "Income"
       },
@@ -169,21 +170,20 @@
       {
         "date": "2023-09-30",
         "description": "Direct Deposit - School District",
-        "amount": 3200,
+        "amount": 1800,
         "type": "credit",
         "category": "Income"
       }
     ],
     "metrics": {
-      "total_income": 3800,
+      "total_income": 3600,
       "total_expenses": 3400,
-      "net_income": 400,
-      "average_monthly_income": 3800,
+      "net_income": 200,
+      "average_monthly_income": 3600,
       "average_monthly_expense": 3400,
       "income_vs_expenses": {
-        "income": 3800,
+        "income": 3600,
         "expenses": 3400
       }
     }
   }
-  

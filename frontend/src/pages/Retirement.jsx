@@ -44,7 +44,7 @@ function Retirement() {
   const [ira, setIra] = useState(0); // IRA monthly contribution
   const [otherInvestments, setOtherInvestments] = useState(0); // Other investments
 
-  const [currentAge, setCurrentAge] = useState(0);
+  const [currentAge, setCurrentAge] = useState(25);
   const [retirementAge, setRetirementAge] = useState(65);
   const [currentSavings, setCurrentSavings] = useState(0);
   const [yearsOfService, setYearsOfService] = useState(0); // Years already worked
@@ -55,6 +55,11 @@ function Retirement() {
 
   // Total monthly contribution
   const [totalContribution, setTotalContribution] = useState(0);
+
+  // New state for warning message
+  const [retirementWarning, setRetirementWarning] = useState('');
+
+  const [retirementAccounts, setRetirementAccounts] = useState(0);
 
   // Effect to update initial data based on career stage
   useEffect(() => {
@@ -73,9 +78,23 @@ function Retirement() {
         data = earlyCareerData;
     }
 
-    // Extract necessary data from the selected career stage
+    console.log('Loaded data:', data); // Debug log
+
     const personalInfo = data.personal_info;
     const financialInfo = data.financial_info;
+
+    setTrs(financialInfo.monthly_contributions.TRS);
+    setFour03b(financialInfo.monthly_contributions['403b']);
+    setIra(financialInfo.monthly_contributions.IRA);
+    setOtherInvestments(financialInfo.monthly_contributions.Other);
+    setCurrentAge(personalInfo.current_age);
+    setRetirementAge(personalInfo.retirement_age);
+    setCurrentSavings(financialInfo.current_savings);
+    setYearsOfService(personalInfo.years_of_service);
+    setRiskTolerance(personalInfo.risk_tolerance.toLowerCase());
+    setRetirementAccounts(financialInfo.retirement_accounts || 0);
+
+    console.log('Updated state:', { trs, four03b, ira, otherInvestments, currentAge, retirementAge, currentSavings, yearsOfService, riskTolerance, retirementAccounts }); // Debug log
 
     // Set initial data state
     const initData = {
@@ -88,6 +107,7 @@ function Retirement() {
       currentSavings: financialInfo.current_savings || 0,
       yearsOfService: personalInfo.years_of_service || 0,
       riskTolerance: personalInfo.risk_tolerance.toLowerCase() || "moderate",
+      retirementAccounts: financialInfo.retirement_accounts || 0,
     };
 
     setInitialData(initData);
@@ -102,6 +122,7 @@ function Retirement() {
     setCurrentSavings(initData.currentSavings);
     setYearsOfService(initData.yearsOfService);
     setRiskTolerance(initData.riskTolerance);
+    setRetirementAccounts(initData.retirementAccounts);
 
     // Update total contribution
     setTotalContribution(
@@ -120,6 +141,7 @@ function Retirement() {
     setCurrentSavings(initialData.currentSavings);
     setYearsOfService(initialData.yearsOfService);
     setRiskTolerance(initialData.riskTolerance);
+    setRetirementAccounts(initialData.retirementAccounts);
 
     // Update total contribution
     setTotalContribution(
@@ -192,12 +214,18 @@ function Retirement() {
 
   // Calculate Projected Savings
   function calculateProjectedSavings() {
-    let savings = currentSavings;
+    let savings = currentSavings + retirementAccounts;
+    console.log('Initial savings:', savings);
+    console.log('Years until retirement:', yearsUntilRetirement);
+    console.log('Total monthly contribution:', totalContribution);
+    console.log('Salary growth rate:', salaryGrowthRate);
+    console.log('Annual growth rate:', annualGrowthRate);
+
     for (let i = 1; i <= yearsUntilRetirement; i++) {
-      // Assume contributions increase with salary growth
       const adjustedContribution =
         totalContribution * Math.pow(1 + salaryGrowthRate / 100, i - 1);
       savings = (savings + adjustedContribution * 12) * (1 + annualGrowthRate);
+      console.log(`Year ${i} savings: ${savings}`);
     }
     return savings;
   }
@@ -208,14 +236,19 @@ function Retirement() {
     (_, i) => currentAge + i
   );
   const projectedSavingsOverTime = [];
-  let savings = currentSavings;
+  let savings = currentSavings + retirementAccounts; // Start with total current savings
 
+  // Calculate yearly savings growth
+  const yearlyGrowth = [];
   for (let i = 0; i <= yearsUntilRetirement; i++) {
     const adjustedContribution =
       totalContribution * Math.pow(1 + salaryGrowthRate / 100, i);
-    savings =
-      (savings + (i === 0 ? 0 : adjustedContribution * 12)) *
-      (1 + (i === 0 ? 0 : annualGrowthRate));
+    const annualContribution = adjustedContribution * 12;
+    const investmentGrowth = i === 0 ? 0 : savings * annualGrowthRate;
+    const totalGrowth = annualContribution + investmentGrowth;
+    
+    yearlyGrowth.push(totalGrowth);
+    savings += totalGrowth;
     projectedSavingsOverTime.push(savings);
   }
 
@@ -249,9 +282,7 @@ function Retirement() {
     datasets: [
       {
         label: "Annual Savings Growth ($)",
-        data: projectedSavingsOverTime.map((savings, index) =>
-          index === 0 ? savings : savings - projectedSavingsOverTime[index - 1]
-        ),
+        data: projectedSavingsOverTime,
         backgroundColor: "#22c55e",
       },
     ],
@@ -259,11 +290,18 @@ function Retirement() {
 
   // Estimate TRS Pension Benefit
   const estimateTrsPension = () => {
-    const totalYearsOfService = yearsOfService + yearsUntilRetirement;
-    const averageSalary =
-      55000 * Math.pow(1 + salaryGrowthRate / 100, yearsUntilRetirement / 2); // Assume average salary increases over time
+    const totalYearsOfService = yearsOfService + (retirementAge - currentAge);
+    const averageSalary = 55000 * Math.pow(1 + salaryGrowthRate / 100, (retirementAge - currentAge) / 2);
     const multiplier = 0.023;
-    const pension = averageSalary * totalYearsOfService * multiplier;
+    let pension = averageSalary * totalYearsOfService * multiplier;
+
+    // Apply early retirement reduction if applicable
+    if (retirementAge < 62 && retirementAge + totalYearsOfService < 80) {
+      const yearsEarly = Math.min(62 - retirementAge, 7); // Max 7 years early
+      const reduction = 0.05 * yearsEarly; // 5% per year
+      pension *= (1 - reduction);
+    }
+
     return pension;
   };
 
@@ -344,8 +382,75 @@ function Retirement() {
 
   const savingsMilestones = calculateSavingsMilestones();
 
+  // Update the current age input
+  const handleCurrentAgeChange = (newAge) => {
+    const age = Number(newAge);
+    setCurrentAge(age);
+    if (age >= retirementAge) {
+      setRetirementAge(Math.min(age + 1, 70));
+    }
+    checkRetirementEligibility(retirementAge);
+  };
+
+  // Update the retirement age input
+  const handleRetirementAgeChange = (newAge) => {
+    const age = Number(newAge);
+    setRetirementAge(age);
+    if (age <= currentAge) {
+      setCurrentAge(Math.max(age - 1, 20));
+    }
+    checkRetirementEligibility(age);
+  };
+
+  // Update the years of service input
+  const handleYearsOfServiceChange = (newYears) => {
+    const years = Number(newYears);
+    setYearsOfService(years);
+    checkRetirementEligibility(retirementAge);
+  };
+
+  // Check retirement eligibility and set warning
+  const checkRetirementEligibility = (age) => {
+    const totalYearsOfService = yearsOfService + (age - currentAge);
+    if (age < 55) {
+      setRetirementWarning('Minimum retirement age is 55.');
+    } else if (age < 65 && totalYearsOfService < 5) {
+      setRetirementWarning('You need at least 5 years of service to retire before 65.');
+    } else if (age < 62 && age + totalYearsOfService < 80) {
+      setRetirementWarning('You may face early retirement reductions. Consider working until you meet the Rule of 80 or reach age 62.');
+    } else {
+      setRetirementWarning('');
+    }
+  };
+
+  // Add this function to handle retirement accounts change
+  const handleRetirementAccountsChange = (newValue) => {
+    setRetirementAccounts(Number(newValue));
+  };
+
+  const calculateSavings = (targetAge) => {
+    let savings = currentSavings;
+    const monthlyContribution = (monthlySavings + monthlyTrsContribution) * 12;
+    const yearsToRetirement = Math.max(0, retirementAge - currentAge);
+    const yearsAfterRetirement = Math.max(0, targetAge - retirementAge);
+
+    // Calculate savings up to retirement
+    for (let i = 0; i < yearsToRetirement; i++) {
+      savings = savings * (1 + returnRate / 100) + monthlyContribution;
+    }
+
+    // Calculate savings after retirement (assuming no more contributions and a lower return rate)
+    const postRetirementReturnRate = returnRate * 0.75; // Assume 75% of pre-retirement return rate
+    for (let i = 0; i < yearsAfterRetirement; i++) {
+      savings = savings * (1 + postRetirementReturnRate / 100);
+      // Consider subtracting annual withdrawals here if applicable
+    }
+
+    return savings;
+  };
+
   return (
-    <div className="min-h-screen">
+    <div className="  min-h-screen">
       <div className="container mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold text-center mb-2 text-[#025742]">Retirement Planning</h1>
         <p className="text-lg text-center mb-8 text-gray-600">Plan your financial future with confidence</p>
@@ -384,9 +489,9 @@ function Retirement() {
                 <input
                   type="range"
                   min="20"
-                  max="70"
+                  max="69"
                   value={currentAge}
-                  onChange={(e) => setCurrentAge(Number(e.target.value))}
+                  onChange={(e) => handleCurrentAgeChange(e.target.value)}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
@@ -395,21 +500,40 @@ function Retirement() {
                 <label className="block text-sm font-medium mb-1">Retirement Age: {retirementAge}</label>
                 <input
                   type="range"
-                  min={currentAge + 1}
+                  min="55"
                   max="70"
                   value={retirementAge}
-                  onChange={(e) => setRetirementAge(Number(e.target.value))}
+                  onChange={(e) => handleRetirementAgeChange(e.target.value)}
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
+                />
+                {retirementWarning && (
+                  <p className="text-yellow-600 text-sm mt-1">{retirementWarning}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Current Savings: ${currentSavings}</label>
+                <input
+                  type="range"
+                  min="0"
+                  max="500000"
+                  step="1000"
+                  value={currentSavings}
+                  onChange={(e) => setCurrentSavings(Number(e.target.value))}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Current Savings</label>
+                <label className="block text-sm font-medium mb-1">Retirement Accounts: ${retirementAccounts}</label>
                 <input
-                  type="number"
-                  value={currentSavings}
-                  onChange={(e) => setCurrentSavings(Number(e.target.value))}
-                  className="w-full p-2 border rounded text-sm"
+                  type="range"
+                  min="0"
+                  max="1000000"
+                  step="5000"
+                  value={retirementAccounts}
+                  onChange={(e) => handleRetirementAccountsChange(e.target.value)}
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
@@ -424,6 +548,18 @@ function Retirement() {
                   <option value="moderate">Moderate (6% growth)</option>
                   <option value="aggressive">Aggressive (8% growth)</option>
                 </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Years of Service: {yearsOfService}</label>
+                <input
+                  type="range"
+                  min="0"
+                  max="40"
+                  value={yearsOfService}
+                  onChange={(e) => handleYearsOfServiceChange(e.target.value)}
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
+                />
               </div>
             </div>
 
