@@ -114,7 +114,7 @@ export default function Home() {
                   </p>
                   <div className="flex space-x-4 justify-center lg:justify-start">
                     <Link
-                      to="/dashboard"
+                      to="/signup"
                       className="inline-flex items-center px-6 py-3 bg-white text-[#025742] rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm"
                     >
                       Get Started
@@ -294,7 +294,7 @@ export default function Home() {
                   Join thousands of Texas teachers who are securing their financial future.
                 </p>
                 <Link
-                  to="/dashboard"
+                  to="/signup"
                   className="inline-flex items-center px-8 py-4 bg-white text-[#025742] rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm"
                 >
                   Create Your Account
