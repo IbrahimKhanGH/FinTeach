@@ -64,8 +64,6 @@ function Navbar() {
               <NavLink to="/retirement">Retirement</NavLink>
               <NavLink to="/income-expenses">Income/Expenses</NavLink>
               <NavLink to="/educationresources">Education Resources</NavLink>
-              <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-              <NavLink to="/settings">Settings</NavLink>
             </div>
           </div>
 
@@ -114,23 +112,18 @@ function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="sm:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/dashboard">Dashboard</NavLink>
-              <NavLink to="/retirement">Retirement</NavLink>
-              <NavLink to="/income-expenses">Income/Expenses</NavLink>
-              <NavLink to="/educationresources">Education Resources</NavLink>
-              <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-            </div>
+      {mobileMenuOpen && (
+        <div className="sm:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink to="/retirement">Retirement</NavLink>
+            <NavLink to="/income-expenses">Income/Expenses</NavLink>
+            <NavLink to="/educationresources">Education Resources</NavLink>
+            <NavLink to="/plaid-demo">Plaid Demo</NavLink>
           </div>
-        )}
-      </div>
-
-      {/* Render Chatbox component when chatboxOpen is true */}
-      {chatboxOpen && <Chatbox />}
+        </div>
+      )}
     </nav>
   );
 }

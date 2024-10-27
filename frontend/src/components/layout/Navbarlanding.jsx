@@ -46,7 +46,7 @@ function NavbarLanding() {
 
           {/* Desktop Links for Login and Sign Up */}
           <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/login">Get Started</NavLink>
             <NavLink to="/signup">Sign Up</NavLink>
           </div>
 
