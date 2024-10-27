@@ -1,6 +1,6 @@
 # app.py
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
@@ -22,12 +22,14 @@ from plaid.model.investments_holdings_get_request import InvestmentsHoldingsGetR
 from plaid.model.investments_transactions_get_request import InvestmentsTransactionsGetRequest
 from plaid.model.investment_transaction_type import InvestmentTransactionType
 from plaid.exceptions import ApiException
+import json
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['SECRET_KEY'] = 'your-secret-key'
 
 # Plaid configuration
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
@@ -55,6 +57,17 @@ client = plaid_api.PlaidApi(api_client)
 
 # Store access tokens (in-memory for this example; use a database in production)
 user_access_tokens = {}
+
+# Load teachers from JSON file
+with open('teachers.json', 'r') as f:
+    teachers = json.load(f)
+
+# Mapping of Plaid user_ids to teacher ids
+plaid_user_to_teacher = {
+    "custom_early": 0,  # Index for early career
+    "custom_middle": 1,  # Index for middle career
+    "custom_late": 2  # Index for late career
+}
 
 @app.route('/create_link_token', methods=['GET'])
 def create_link_token():
@@ -148,120 +161,44 @@ def get_accounts():
 @app.route('/get_financial_data', methods=['GET'])
 def get_financial_data():
     print("Get financial data route hit")
-    user_id = 'unique_user_id'  # In a real app, use the authenticated user's ID
-    access_token = user_access_tokens.get(user_id)
-    if not access_token:
-        return jsonify({'error': 'Access token not found'}), 400
-
-    try:
-        # Get accounts
-        accounts_request = AccountsGetRequest(access_token=access_token)
-        accounts_response = client.accounts_get(accounts_request)
-        accounts = accounts_response['accounts']
-
-        # Get transactions for the last 30 days
-        start_date = (datetime.now() - timedelta(days=30)).date()
-        end_date = datetime.now().date()
-        transactions_request = TransactionsGetRequest(
-            access_token=access_token,
-            start_date=start_date,
-            end_date=end_date,
-            options=TransactionsGetRequestOptions(count=500, offset=0)
-        )
-        transactions_response = client.transactions_get(transactions_request)
-        transactions = transactions_response['transactions']
-
-        # Get investments holdings
-        investments_request = InvestmentsHoldingsGetRequest(access_token=access_token)
-        investments_response = client.investments_holdings_get(investments_request)
-        holdings = investments_response['holdings']
-        securities = investments_response['securities']
-
-        # Get investment transactions
-        inv_transactions_request = InvestmentsTransactionsGetRequest(
-            access_token=access_token,
-            start_date=start_date,
-            end_date=end_date
-        )
-        inv_transactions_response = client.investments_transactions_get(inv_transactions_request)
-        investment_transactions = inv_transactions_response['investment_transactions']
-
-        # Process the financial data and ensure serialization compatibility
-        financial_data = {
-            'accounts': [
-                {
-                    'account_id': account['account_id'],
-                    'name': account['name'],
-                    'type': str(account['type']),
-                    'subtype': str(account['subtype']),
-                    'balances': {
-                        'available': float(account['balances']['available']) if account['balances']['available'] is not None else None,
-                        'current': float(account['balances']['current']) if account['balances']['current'] is not None else None,
-                        'limit': float(account['balances']['limit']) if account['balances']['limit'] is not None else None,
-                    }
-                } for account in accounts
-            ],
-            'transactions': [
-                {
-                    'transaction_id': transaction['transaction_id'],
-                    'amount': float(transaction['amount']),
-                    'date': str(transaction['date']),
-                    'name': transaction['name'],
-                    'category': transaction['category']
-                } for transaction in transactions
-            ],
-            'investments': {
-                'holdings': [
-                    {
-                        'account_id': holding['account_id'],
-                        'security_id': holding['security_id'],
-                        'quantity': float(holding['quantity']),
-                        'institution_value': float(holding['institution_value']) if holding['institution_value'] is not None else None,
-                        'cost_basis': float(holding['cost_basis']) if holding['cost_basis'] is not None else None,
-                    } for holding in holdings
-                ],
-                'securities': [
-                    {
-                        'security_id': security['security_id'],
-                        'name': security['name'],
-                        'ticker_symbol': security.get('ticker_symbol'),
-                        'type': str(security['type']),
-                        'close_price': float(security['close_price']) if security['close_price'] is not None else None,
-                    } for security in securities
-                ],
-                'transactions': [
-                    {
-                        'investment_transaction_id': tx['investment_transaction_id'],
-                        'account_id': tx['account_id'],
-                        'security_id': tx['security_id'],
-                        'date': str(tx['date']),
-                        'name': tx['name'],
-                        'quantity': float(tx['quantity']),
-                        'amount': float(tx['amount']),
-                        'type': str(tx['type']),
-                    } for tx in investment_transactions
-                ]
-            },
-        }
-
-        return jsonify(financial_data)
-    except ApiException as e:
-        print(f"Plaid API error: {e}")
-        error_response = format_error(e)
-        return jsonify(error_response), 500
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        import traceback
-        traceback.print_exc()
-        return jsonify({"error": str(e)}), 500
+    user_id = session.get('user_id')  # Get the user_id from the session
+    if not user_id:
+        return jsonify({'error': 'User not logged in'}), 401
+    
+    teacher_index = plaid_user_to_teacher.get(user_id)
+    if teacher_index is None:
+        return jsonify({'error': 'Invalid user ID'}), 400
+    
+    # Return the financial data for the logged-in user
+    return jsonify(teachers[teacher_index])  # Return the entire teacher data
 
 @app.route('/test', methods=['GET'])
 def test():
     return jsonify({"message": "Test successful"}), 200
+
+@app.route('/login', methods=['POST'])
+def login():
+    plaid_user_id = request.json.get('plaid_user_id')
+    
+    if plaid_user_id not in plaid_user_to_teacher:
+        return jsonify({"error": "Invalid Plaid user ID"}), 401
+    
+    teacher_index = plaid_user_to_teacher[plaid_user_id]
+    session['user_id'] = plaid_user_id
+    
+    return jsonify({
+        "message": "Login successful",
+        "teacher": teachers[teacher_index]  # Return the corresponding teacher data
+    })
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({"message": "Logout successful"})
 
 def format_error(e):
     response = e.body
     return {'error': response}
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(debug=True)

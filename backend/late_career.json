@@ -1,0 +1,195 @@
+{
+    "personal_info": {
+      "name": "James Smith",
+      "current_age": 60,
+      "retirement_age": 65,
+      "years_of_service": 35,
+      "risk_tolerance": "Conservative"
+    },
+    "financial_info": {
+      "current_salary": 65000,
+      "monthly_net_income": 4500,
+      "monthly_expenses": 3300,
+      "current_savings": 150000,
+      "monthly_investments": 1000,
+      "monthly_contributions": {
+        "TRS": 417,
+        "403b": 300,
+        "IRA": 250,
+        "Other": 33
+      }
+    },
+    "retirement_readiness": {
+      "grade": "A",
+      "retirement_goal": 700000,
+      "projected_savings": 650000,
+      "percentage_of_goal": 93
+    },
+    "transactions": [
+      {
+        "date": "2023-10-31",
+        "description": "Direct Deposit - School District",
+        "amount": 4000,
+        "type": "credit",
+        "category": "Income"
+      },
+      {
+        "date": "2023-10-30",
+        "description": "Property Tax Payment",
+        "amount": -500,
+        "type": "debit",
+        "category": "Housing"
+      },
+      {
+        "date": "2023-10-29",
+        "description": "Grocery Store - Whole Foods",
+        "amount": -350,
+        "type": "debit",
+        "category": "Food & Dining"
+      },
+      {
+        "date": "2023-10-28",
+        "description": "Healthcare Premium",
+        "amount": -400,
+        "type": "debit",
+        "category": "Healthcare"
+      },
+      {
+        "date": "2023-10-27",
+        "description": "Auto Loan Payment",
+        "amount": -500,
+        "type": "debit",
+        "category": "Transportation"
+      },
+      {
+        "date": "2023-10-26",
+        "description": "Electricity Bill",
+        "amount": -120,
+        "type": "debit",
+        "category": "Utilities"
+      },
+      {
+        "date": "2023-10-25",
+        "description": "Water Bill",
+        "amount": -50,
+        "type": "debit",
+        "category": "Utilities"
+      },
+      {
+        "date": "2023-10-24",
+        "description": "Internet Bill",
+        "amount": -70,
+        "type": "debit",
+        "category": "Utilities"
+      },
+      {
+        "date": "2023-10-23",
+        "description": "Dining Out - Local Bistro",
+        "amount": -80,
+        "type": "debit",
+        "category": "Food & Dining"
+      },
+      {
+        "date": "2023-10-22",
+        "description": "Salary Contribution to 403b",
+        "amount": -300,
+        "type": "debit",
+        "category": "Investments"
+      },
+      {
+        "date": "2023-10-21",
+        "description": "Salary Contribution to IRA",
+        "amount": -250,
+        "type": "debit",
+        "category": "Investments"
+      },
+      {
+        "date": "2023-10-20",
+        "description": "Home Maintenance",
+        "amount": -200,
+        "type": "debit",
+        "category": "Home"
+      },
+      {
+        "date": "2023-10-19",
+        "description": "Pharmacy - Medications",
+        "amount": -60,
+        "type": "debit",
+        "category": "Healthcare"
+      },
+      {
+        "date": "2023-10-18",
+        "description": "Golf Club Membership",
+        "amount": -150,
+        "type": "debit",
+        "category": "Entertainment"
+      },
+      {
+        "date": "2023-10-17",
+        "description": "Gift to Grandchildren",
+        "amount": -200,
+        "type": "debit",
+        "category": "Gifts"
+      },
+      {
+        "date": "2023-10-16",
+        "description": "Rental Income Deposit",
+        "amount": 1500,
+        "type": "credit",
+        "category": "Income"
+      },
+      {
+        "date": "2023-10-15",
+        "description": "Charitable Donation",
+        "amount": -100,
+        "type": "debit",
+        "category": "Charity"
+      },
+      {
+        "date": "2023-10-14",
+        "description": "Cable TV Subscription",
+        "amount": -100,
+        "type": "debit",
+        "category": "Entertainment"
+      },
+      {
+        "date": "2023-10-13",
+        "description": "Gas Station",
+        "amount": -60,
+        "type": "debit",
+        "category": "Transportation"
+      },
+      {
+        "date": "2023-10-12",
+        "description": "Salary Contribution to Other Investments",
+        "amount": -33,
+        "type": "debit",
+        "category": "Investments"
+      },
+      {
+        "date": "2023-09-30",
+        "description": "Direct Deposit - School District",
+        "amount": 4000,
+        "type": "credit",
+        "category": "Income"
+      },
+      {
+        "date": "2023-09-29",
+        "description": "Property Tax Payment",
+        "amount": -500,
+        "type": "debit",
+        "category": "Housing"
+      }
+    ],
+    "metrics": {
+      "total_income": 4500,
+      "total_expenses": 3300,
+      "net_income": 1200,
+      "average_monthly_income": 4500,
+      "average_monthly_expense": 3300,
+      "income_vs_expenses": {
+        "income": 4500,
+        "expenses": 3300
+      }
+    }
+  }

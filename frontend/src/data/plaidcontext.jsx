@@ -4,23 +4,26 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const PlaidContext = createContext();
 
 export function PlaidProvider({ children }) {
-  const [plaidData, setPlaidData] = useState(() => {
-    const storedData = localStorage.getItem('plaidData');
-    return storedData ? JSON.parse(storedData) : {};
+  const [currentUser, setCurrentUser] = useState(() => {
+    const storedUser = localStorage.getItem('currentUser');
+    return storedUser ? JSON.parse(storedUser) : null;
   });
 
   useEffect(() => {
-    localStorage.setItem('plaidData', JSON.stringify(plaidData));
-  }, [plaidData]);
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  }, [currentUser]);
 
-  const addPlaidData = (accountId, data) => {
-    console.log("Storing data in PlaidContext for account:", accountId, data); // Add this line
-    setPlaidData((prevData) => ({ ...prevData, [accountId]: data }));
+  const addPlaidData = (userId, data) => {
+    setCurrentUser({ userId, ...data });
   };
 
+  const logout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('currentUser');
+  };
 
   return (
-    <PlaidContext.Provider value={{ plaidData, addPlaidData }}>
+    <PlaidContext.Provider value={{ currentUser, addPlaidData, logout }}>
       {children}
     </PlaidContext.Provider>
   );

@@ -33,27 +33,28 @@ function PlaidDemo() {
 
   const handleOnSuccess = async (public_token, metadata) => {
     try {
-      const exchangeResponse = await fetch('http://127.0.0.1:5000/exchange_public_token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ public_token }),
-      });
-      
-      if (!exchangeResponse.ok) {
-        throw new Error(`Failed to exchange public token: ${exchangeResponse.statusText}`);
-      }
+        const exchangeResponse = await fetch('http://127.0.0.1:5000/exchange_public_token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ public_token }),
+        });
+        
+        if (!exchangeResponse.ok) {
+            throw new Error(`Failed to exchange public token: ${exchangeResponse.statusText}`);
+        }
 
-      const financialDataResponse = await fetch('http://127.0.0.1:5000/get_financial_data');
-      
-      if (!financialDataResponse.ok) {
-        throw new Error(`Failed to fetch financial data: ${financialDataResponse.statusText}`);
-      }
+        // Fetch financial data after successful token exchange
+        const financialDataResponse = await fetch('http://127.0.0.1:5000/get_financial_data');
+        
+        if (!financialDataResponse.ok) {
+            throw new Error(`Failed to fetch financial data: ${financialDataResponse.statusText}`);
+        }
 
-      const data = await financialDataResponse.json();
-      setFinancialData(data);
+        const data = await financialDataResponse.json();
+        setFinancialData(data);  // Set the financial data in state
     } catch (error) {
-      console.error('Error:', error);
-      setError(`Failed to fetch financial data: ${error.message}`);
+        console.error('Error:', error);
+        setError(`Failed to fetch financial data: ${error.message}`);
     }
   };
 

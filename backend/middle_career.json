@@ -1,0 +1,189 @@
+{
+    "personal_info": {
+      "name": "Maria Rodriguez",
+      "current_age": 40,
+      "retirement_age": 65,
+      "years_of_service": 15,
+      "risk_tolerance": "Moderate"
+    },
+    "financial_info": {
+      "current_salary": 55000,
+      "monthly_net_income": 3800,
+      "monthly_expenses": 3400,
+      "current_savings": 25000,
+      "monthly_investments": 600,
+      "monthly_contributions": {
+        "TRS": 353,         
+        "403b": 200,
+        "IRA": 150,
+        "Other": 50
+      }
+    },
+    "retirement_readiness": {
+      "grade": "C",
+      "retirement_goal": 800000,
+      "projected_savings": 400000,
+      "percentage_of_goal": 50
+    },
+    "transactions": [
+      {
+        "date": "2023-10-31",
+        "description": "Direct Deposit - School District",
+        "amount": 3200,
+        "type": "credit",
+        "category": "Income"
+      },
+      {
+        "date": "2023-10-30",
+        "description": "Mortgage Payment",
+        "amount": -1000,
+        "type": "debit",
+        "category": "Housing"
+      },
+      {
+        "date": "2023-10-29",
+        "description": "Daycare Payment",
+        "amount": -500,
+        "type": "debit",
+        "category": "Childcare"
+      },
+      {
+        "date": "2023-10-28",
+        "description": "Groceries - Kroger",
+        "amount": -250,
+        "type": "debit",
+        "category": "Food & Dining"
+      },
+      {
+        "date": "2023-10-27",
+        "description": "Electricity Bill",
+        "amount": -100,
+        "type": "debit",
+        "category": "Utilities"
+      },
+      {
+        "date": "2023-10-26",
+        "description": "Water Bill",
+        "amount": -40,
+        "type": "debit",
+        "category": "Utilities"
+      },
+      {
+        "date": "2023-10-25",
+        "description": "Internet Bill",
+        "amount": -60,
+        "type": "debit",
+        "category": "Utilities"
+      },
+      {
+        "date": "2023-10-24",
+        "description": "Auto Loan Payment",
+        "amount": -400,
+        "type": "debit",
+        "category": "Transportation"
+      },
+      {
+        "date": "2023-10-23",
+        "description": "Gas Station",
+        "amount": -50,
+        "type": "debit",
+        "category": "Transportation"
+      },
+      {
+        "date": "2023-10-22",
+        "description": "Dining Out - Olive Garden",
+        "amount": -60,
+        "type": "debit",
+        "category": "Food & Dining"
+      },
+      {
+        "date": "2023-10-21",
+        "description": "Salary Contribution to 403b",
+        "amount": -200,
+        "type": "debit",
+        "category": "Investments"
+      },
+      {
+        "date": "2023-10-20",
+        "description": "Salary Contribution to IRA",
+        "amount": -150,
+        "type": "debit",
+        "category": "Investments"
+      },
+      {
+        "date": "2023-10-19",
+        "description": "Cell Phone Bill",
+        "amount": -80,
+        "type": "debit",
+        "category": "Utilities"
+      },
+      {
+        "date": "2023-10-18",
+        "description": "Target Purchase - Clothing",
+        "amount": -120,
+        "type": "debit",
+        "category": "Shopping"
+      },
+      {
+        "date": "2023-10-17",
+        "description": "Credit Card Payment",
+        "amount": -200,
+        "type": "debit",
+        "category": "Debt Payment"
+      },
+      {
+        "date": "2023-10-16",
+        "description": "Venmo Payment from Friend",
+        "amount": 50,
+        "type": "credit",
+        "category": "Transfer"
+      },
+      {
+        "date": "2023-10-15",
+        "description": "Home Insurance",
+        "amount": -150,
+        "type": "debit",
+        "category": "Insurance"
+      },
+      {
+        "date": "2023-10-14",
+        "description": "Netflix Subscription",
+        "amount": -15.99,
+        "type": "debit",
+        "category": "Entertainment"
+      },
+      {
+        "date": "2023-10-13",
+        "description": "Gym Membership",
+        "amount": -45,
+        "type": "debit",
+        "category": "Health & Fitness"
+      },
+      {
+        "date": "2023-10-12",
+        "description": "Pet Supplies",
+        "amount": -30,
+        "type": "debit",
+        "category": "Pets"
+      },
+      {
+        "date": "2023-09-30",
+        "description": "Direct Deposit - School District",
+        "amount": 3200,
+        "type": "credit",
+        "category": "Income"
+      }
+    ],
+    "metrics": {
+      "total_income": 3800,
+      "total_expenses": 3400,
+      "net_income": 400,
+      "average_monthly_income": 3800,
+      "average_monthly_expense": 3400,
+      "income_vs_expenses": {
+        "income": 3800,
+        "expenses": 3400
+      }
+    }
+  }
+  
