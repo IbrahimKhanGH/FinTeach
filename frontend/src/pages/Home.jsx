@@ -5,7 +5,7 @@ import greenpiggy from "/Green Piggy Bank with Graduation Cap.png";
 
 export default function Home() {
   return (
-    <div className="flex flex-row min-h-screen bg-green">
+    <div className="flex flex-row min-h-screen bg-white">
       {/* Text and CTA Section */}
       <div className="w-[50%] flex flex-col justify-center items-start p-8 bg-cream">
         <div className="flex items-center mb-4">
