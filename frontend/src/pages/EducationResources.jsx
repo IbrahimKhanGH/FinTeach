@@ -148,7 +148,98 @@ const EducationResources = () => {
       url: "https://www.ssa.gov/",
       icon: Building,
       category: "Official"
-    }
+    },
+    {
+      title: "Texas Retirement System (TRS)",
+      description: "Official portal for Texas teacher retirement benefits and information",
+      url: "https://www.trs.texas.gov/Pages/Homepage.aspx",
+      icon: Landmark,
+      category: "Retirement"
+    },
+    {
+      title: "Teacher Retirement Calculator",
+      description: "Estimate your Texas teacher retirement benefits",
+      url: "https://www.trs.texas.gov/Pages/benefit_calculator.aspx",
+      icon: Calculator,
+      category: "Tools"
+    },
+    {
+      title: "Texas Public Education Reform Foundation",
+      description: "Initiatives supporting public education reform",
+      url: "https://texasreform.org/",
+      icon: Building,
+      category: "Official"
+    },
+    {
+      title: "National Council on Teacher Quality",
+      description: "Improving teacher quality through resources and research",
+      url: "https://www.nctq.org/",
+      icon: Library,
+      category: "Professional"
+    },
+    {
+      title: "Texas Council on Economic Education",
+      description: "Economic and financial education resources",
+      url: "https://www.economicstexas.org/",
+      icon: Calculator,
+      category: "Financial"
+    },
+    {
+      title: "Teacher Grants and Scholarships",
+      description: "Find grants and scholarships for Texas teachers",
+      url: "https://www.teachergrants.org/",
+      icon: BookOpen,
+      category: "Education"
+    },
+    {
+      title: "Teacher's Guide to Retirement Planning",
+      description: "Comprehensive guide to retirement planning for teachers",
+      url: "https://retirementguide.com/",
+      icon: Landmark,
+      category: "Retirement"
+    },
+    {
+      title: "Texas Educators Credit Union",
+      description: "Banking and financial services for Texas educators",
+      url: "https://texasedcu.org/",
+      icon: Landmark,
+      category: "Financial"
+    },
+    {
+      title: "Teacher Financial Wellness",
+      description: "Financial wellness programs for educators",
+      url: "https://teacherfinance.com/",
+      icon: Calculator,
+      category: "Financial"
+    },
+    {
+      title: "Texas Health Educators Network",
+      description: "Health education resources for Texas teachers",
+      url: "https://texashealthnetwork.org/",
+      icon: Heart,
+      category: "Support"
+    },
+    {
+      title: "Texas Teachers Financial Advisors",
+      description: "Financial planning for Texas educators",
+      url: "https://texasteachersadvisors.com/",
+      icon: Calculator,
+      category: "Financial"
+    },
+    {
+      title: "Educator Savings Program",
+      description: "Savings and investment programs for educators",
+      url: "https://educatorsavings.org/",
+      icon: Calculator,
+      category: "Financial"
+    },
+    {
+      title: "Teacher Certification and Licensing",
+      description: "Certification resources for Texas teachers",
+      url: "https://www.certifyteachers.com/",
+      icon: BookOpen,
+      category: "Education"
+    },
   ];
 
   const categories = ['All', ...new Set(resources.map(resource => resource.category))];

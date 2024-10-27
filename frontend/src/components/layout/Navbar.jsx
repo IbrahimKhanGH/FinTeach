@@ -61,20 +61,20 @@ function Navbar() {
             </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+
+          {/* Desktop Navigation, Chat button, and Profile menu */}
+          <div className="hidden sm:flex sm:items-center sm:space-x-8">
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/retirement">Retirement</NavLink>
             <NavLink to="/income-expenses">Income/Expenses</NavLink>
             <NavLink to="/educationresources">Education Resources</NavLink>
-          </div>
-
           {/* Chat button and profile menu */}
           <div className="flex items-center">
+
             {/* Chat button */}
             <button
               onClick={() => setChatboxOpen(!chatboxOpen)}
-              className="mr-4 text-gray-700 hover:text-fidelity-green focus:outline-none"
+              className="text-gray-700 hover:text-fidelity-green focus:outline-none"
               aria-label="Chat with Assistant"
             >
               <MessageSquare className="h-6 w-6" />
@@ -90,6 +90,7 @@ function Navbar() {
                 <User className="h-6 w-6 text-gray-500" />
               </div>
             </button>
+          </div>
 
             {/* Profile dropdown */}
             {profileMenuOpen && (
@@ -114,19 +115,20 @@ function Navbar() {
                 </button>
               </div>
             )}
-          </div>
-        </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/dashboard">Dashboard</NavLink>
-            <NavLink to="/retirement">Retirement</NavLink>
-            <NavLink to="/income-expenses">Income/Expenses</NavLink>
-            <NavLink to="/educationresources">Education Resources</NavLink>
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink to="/retirement">Retirement</NavLink>
+              <NavLink to="/income-expenses">Income/Expenses</NavLink>
+              <NavLink to="/educationresources">Education Resources</NavLink>
+              <NavLink to="/plaid-demo">Plaid Demo</NavLink>
+              <NavLink to="/settings">Settings</NavLink>
+            </div>
+
           </div>
         </div>
       )}
