@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
-import NavbarLanding from './components/layout/Navbarlanding';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Retirement from './pages/Retirement';
@@ -15,14 +14,14 @@ import CareerStageSelection from './pages/CareerStageSelection';
 function App() {
   const location = useLocation();
 
-  // Define paths where NavbarLanding should be displayed
-  const landingPaths = ['/', '/login', '/signup'];
-  const isLandingPage = landingPaths.includes(location.pathname);
+  // Define paths where Navbar should be displayed
+  const showNavbarPaths = ['/dashboard', '/retirement', '/income-expenses', '/educationresources', '/settings'];
+
+  const shouldShowNavbar = showNavbarPaths.includes(location.pathname);
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-cream">
-      {/* Conditionally render NavbarLanding or Navbar */}
-      {isLandingPage ? <NavbarLanding /> : <Navbar />}
+      {shouldShowNavbar && <Navbar />}
 
       <main className="flex-grow w-full">
         <Routes>
