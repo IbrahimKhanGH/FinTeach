@@ -35,7 +35,8 @@ function Navbar() {
     <nav className="bg-white shadow-sm">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex items-center flex-grow">
+          {/* Logo and FinTeach title */}
+          <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/">
                 <img className="h-12 w-auto" src={fidelityLogo} alt="Logo" />
@@ -55,17 +56,19 @@ function Navbar() {
                 </div>
               </Link>
             </div>
+          </div>
 
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
+          {/* Navigation links and profile menu */}
+          <div className="flex items-center justify-end flex-grow">
+            <div className="hidden sm:flex sm:space-x-4 mr-4">
               <NavLink to="/dashboard">Dashboard</NavLink>
               <NavLink to="/retirement">Retirement</NavLink>
               <NavLink to="/income-expenses">Income/Expenses</NavLink>
               <NavLink to="/educationresources">Education Resources</NavLink>
               <NavLink to="/plaid-demo">Plaid Demo</NavLink>
             </div>
-          </div>
 
-          <div className="flex items-center">
+            {/* Profile menu */}
             <div className="relative">
               <button
                 onClick={() => setProfileMenuOpen(!profileMenuOpen)}

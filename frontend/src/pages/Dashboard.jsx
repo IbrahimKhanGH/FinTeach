@@ -52,6 +52,23 @@ function Dashboard() {
     return "F";
   };
 
+  const getRetirementGradeColor = (grade) => {
+    switch (grade) {
+      case "A+":
+      case "A":
+        return "#16a34a"; // green-600
+      case "B":
+        return "#f97316"; // orange-500
+      case "C":
+        return "#eab308"; // yellow-500
+      case "D":
+      case "F":
+        return "#dc2626"; // red-600
+      default:
+        return "#4b5563"; // gray-600
+    }
+  };
+
   // Update state based on selected career stage
   useEffect(() => {
     let data;
@@ -91,13 +108,13 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-6">
       {/* Top Section */}
-      <div className="max-w-7xl mx-auto mb-8">
-        <div className="bg-gradient-to-r from-[#025742] to-emerald-800 rounded-2xl overflow-hidden shadow-lg">
-          <div className="px-6 lg:px-12 py-8 lg:py-12">
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome back, {careerStage === 'early' ? 'Alex' : careerStage === 'middle' ? 'Maria' : 'James'}</h1>
-            <p className="text-lg text-white/90">Here's an overview of your financial health</p>
+      <div className="max-w-7xl mx-auto mb-6">
+        <div className="bg-gradient-to-r from-[#025742] to-emerald-800 rounded-lg overflow-hidden shadow-md">
+          <div className="px-6 py-4">
+            <h1 className="text-2xl font-bold text-white">Welcome back, {careerStage === 'early' ? 'Alex' : careerStage === 'middle' ? 'Maria' : 'James'}</h1>
+            <p className="text-sm text-white/90 mt-1">Here is your financial overview</p>
           </div>
         </div>
       </div>
@@ -140,14 +157,14 @@ function Dashboard() {
                     a 15.9155 15.9155 0 0 1 0 31.831
                     a 15.9155 15.9155 0 0 1 0 -31.831"
                   fill="none"
-                  stroke="#3b82f6"
+                  stroke={getRetirementGradeColor(getRetirementGrade(retirementReadiness))}
                   strokeWidth="3"
                   strokeDasharray={`${retirementReadiness}, 100`}
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-4xl font-bold">{retirementReadiness}%</span>
-                <span className="text-2xl font-bold text-[#025742]">
+                <span className={`text-2xl font-bold`} style={{ color: getRetirementGradeColor(getRetirementGrade(retirementReadiness)) }}>
                   {getRetirementGrade(retirementReadiness)}
                 </span>
               </div>

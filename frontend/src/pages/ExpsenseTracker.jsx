@@ -1,118 +1,161 @@
 // src/pages/IncomeExpenses.jsx
-import { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
-import earlyCareerData from '../data/early_career.json';
-import middleCareerData from '../data/middle_career.json';
-import lateCareerData from '../data/late_career.json';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';  
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-import { Wallet, TrendingUp, TrendingDown, Filter } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Doughnut } from "react-chartjs-2";
+import earlyCareerData from "../data/early_career.json";
+import middleCareerData from "../data/middle_career.json";
+import lateCareerData from "../data/late_career.json";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+ChartJS.register(ArcElement, Tooltip, Legend);
+import { Wallet, TrendingUp, TrendingDown, PlusCircle } from "lucide-react";
 
 function IncomeExpenses() {
   const [transactions, setTransactions] = useState([]);
-  const [filterType, setFilterType] = useState('all');
-  const [sortOrder, setSortOrder] = useState('desc');
-  const [careerStage, setCareerStage] = useState('early');
+  const [filterType, setFilterType] = useState("all");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [careerStage, setCareerStage] = useState("early");
+  const [recommendedBudget, setRecommendedBudget] = useState({});
+  const [adjustedBudget, setAdjustedBudget] = useState({});
+  const [expenseCategories, setExpenseCategories] = useState([
+    { name: "Housing", percentage: 30 },
+    { name: "Food", percentage: 15 },
+    { name: "Transportation", percentage: 10 },
+    { name: "Savings", percentage: 20 },
+    { name: "Entertainment", percentage: 5 },
+    { name: "Miscellaneous", percentage: 5 },
+  ]);
 
-  // Use selected career stage data
+  const [newCategory, setNewCategory] = useState({ name: "", percentage: "" });
+  const [totalExpenses, setTotalExpenses] = useState(0);
+
   useEffect(() => {
     let data;
     switch (careerStage) {
-      case 'early':
+      case "early":
         data = earlyCareerData;
         break;
-      case 'middle':
+      case "middle":
         data = middleCareerData;
         break;
-      case 'late':
+      case "late":
         data = lateCareerData;
         break;
       default:
         data = earlyCareerData;
     }
-    // Ensure transactions have transaction_id
     const transactionsWithIds = data.transactions.map((t, index) => ({
       transaction_id: t.transaction_id || `txn-${index}`,
       ...t,
     }));
     setTransactions(transactionsWithIds);
+
+    calculateRecommendedBudget(transactionsWithIds);
   }, [careerStage]);
 
-  // Process transactions
   const incomeTransactions = transactions.filter((t) => t.amount > 0);
   const expenseTransactions = transactions.filter((t) => t.amount < 0);
 
-  const totalIncome = incomeTransactions.reduce(
-    (sum, t) => sum + t.amount,
-    0
-  );
-  const totalExpenses = expenseTransactions.reduce(
+  const totalIncome = incomeTransactions.reduce((sum, t) => sum + t.amount, 0);
+  const totalExpensesAmount = expenseTransactions.reduce(
     (sum, t) => sum + Math.abs(t.amount),
     0
   );
-  const netIncome = totalIncome - totalExpenses;
+  const netIncome = totalIncome - totalExpensesAmount;
 
-  const chartData = {
-    labels: ['Income', 'Expenses'],
+  const filteredTransactions = transactions
+    .filter(
+      (t) =>
+        filterType === "all" ||
+        (filterType === "income" ? t.amount > 0 : t.amount < 0)
+    )
+    .sort((a, b) =>
+      sortOrder === "desc"
+        ? new Date(b.date) - new Date(a.date)
+        : new Date(a.date) - new Date(b.date)
+    );
+
+  const calculateRecommendedBudget = (transactions) => {
+    const categoryTotals = {};
+    transactions.forEach((t) => {
+      if (t.amount < 0) {
+        const category = t.category || "Other";
+        categoryTotals[category] =
+          (categoryTotals[category] || 0) + Math.abs(t.amount);
+      }
+    });
+
+    const totalExpenses = Object.values(categoryTotals).reduce(
+      (sum, amount) => sum + amount,
+      0
+    );
+    setTotalExpenses(totalExpenses);
+
+    const recommended = {};
+    expenseCategories.forEach((category) => {
+      recommended[category.name] = {
+        amount: (totalExpenses * category.percentage) / 100,
+        percentage: category.percentage,
+      };
+    });
+
+    setRecommendedBudget(recommended);
+    setAdjustedBudget(recommended);
+  };
+
+  const handleBudgetChange = (category, newPercentage) => {
+    const adjusted = { ...adjustedBudget };
+    adjusted[category] = {
+      ...adjusted[category],
+      percentage: newPercentage,
+      amount: totalExpenses * (newPercentage / 100),
+    };
+    setAdjustedBudget(adjusted);
+  };
+
+  const handleAddCategory = () => {
+    if (newCategory.name && newCategory.percentage) {
+      setExpenseCategories([...expenseCategories, newCategory]);
+      setNewCategory({ name: "", percentage: "" });
+    }
+  };
+
+  const expenseData = {
+    labels: expenseCategories.map((cat) => cat.name),
     datasets: [
       {
-        label: 'Amount',
-        data: [totalIncome, totalExpenses],
-        backgroundColor: ['#10B981', '#EF4444'],
+        data: expenseCategories.map(
+          (cat) => adjustedBudget[cat.name]?.amount || 0
+        ),
+        backgroundColor: [
+          "#F87171",
+          "#FBBF24",
+          "#34D399",
+          "#60A5FA",
+          "#A78BFA",
+          "#F472B6",
+          "#FCD34D",
+          "#9CA3AF",
+        ],
       },
     ],
   };
 
-  // Combine and sort transactions
-  const filteredTransactions = transactions
-    .filter(t => filterType === 'all' || (filterType === 'income' ? t.amount > 0 : t.amount < 0))
-    .sort((a, b) => sortOrder === 'desc' ? new Date(b.date) - new Date(a.date) : new Date(a.date) - new Date(b.date));
-
-  // Helper function to split description into name and details
-  const splitDescription = (description) => {
-    const parts = description.split(' - ');
-    return {
-      name: parts[0],
-      details: parts.length > 1 ? parts.slice(1).join(' - ') : ''
-    };
-  };
-
   const TransactionList = ({ transactions }) => (
-    <div className="bg-white rounded-xl shadow-sm p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-semibold">Transaction History</h3>
-        <div className="flex space-x-2">
-          <select
-            className="border rounded-md px-2 py-1 text-sm"
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-          </select>
-          <button
-            className="border rounded-md px-2 py-1 text-sm flex items-center"
-            onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
-          >
-            <Filter className="h-4 w-4 mr-1" />
-            {sortOrder === 'desc' ? 'Newest' : 'Oldest'}
-          </button>
-        </div>
-      </div>
-      <ul className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-auto">
+    <div className="bg-white rounded-xl shadow-sm p-4">
+      <h3 className="text-lg font-semibold mb-2">Transaction History</h3>
+      <ul className="space-y-1 max-h-[400px] overflow-y-auto">
         {transactions.map((t, index) => (
-          <li key={t.transaction_id || index} className="flex justify-between items-center py-2 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150 ease-in-out">
-            <span className="text-sm text-gray-600">{t.date} - {t.description}</span>
-            <span className={`text-sm font-medium ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
+          <li
+            key={t.transaction_id || index}
+            className="flex justify-between py-1 border-b border-gray-100"
+          >
+            <span className="text-sm text-gray-600">
+              {t.date} - {t.description}
+            </span>
+            <span
+              className={`text-sm font-medium ${
+                t.amount > 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
               ${Math.abs(t.amount).toFixed(2)}
             </span>
           </li>
@@ -122,132 +165,126 @@ function IncomeExpenses() {
   );
 
   const SummaryCard = ({ title, amount, icon: Icon, color }) => (
-    <div className={`bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300 ease-in-out`}>
+    <div
+      className={`bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-shadow duration-300 ease-in-out`}
+    >
       <div className="flex items-center mb-2">
-        <div className={`p-2 ${color.replace('text-', 'bg-')} bg-opacity-20 rounded-lg mr-4`}>
+        <div
+          className={`p-2 ${color.replace(
+            "text-",
+            "bg-"
+          )} bg-opacity-20 rounded-lg mr-3`}
+        >
           <Icon className={`h-6 w-6 ${color}`} />
         </div>
-        <h3 className="text-lg font-semibold">{title}</h3>
+        <h3 className="text-md font-semibold">{title}</h3>
       </div>
-      <p className={`text-2xl font-bold ${color}`}>${amount.toFixed(2)}</p>
+      <p className={`text-xl font-bold ${color}`}>${amount.toFixed(2)}</p>
     </div>
   );
 
-  // Calculate average income and expenses safely
-  const averageIncome = incomeTransactions.length > 0 ? totalIncome / incomeTransactions.length : 0;
-  const averageExpense = expenseTransactions.length > 0 ? totalExpenses / expenseTransactions.length : 0;
-
   return (
     <div className="income-expenses p-4 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold mb-8 text-gray-800">Income & Expenses</h2>
-      <div className="mb-4">
-        <label htmlFor="careerStage" className="mr-2">Career Stage:</label>
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">
+        Income & Expenses
+      </h2>
+      
+      {/* Career Stage Selector */}
+      <div className="mb-6">
+        <label htmlFor="careerStage" className="block text-sm font-medium text-gray-700 mb-2">
+          Select Career Stage:
+        </label>
         <select
           id="careerStage"
           value={careerStage}
           onChange={(e) => setCareerStage(e.target.value)}
-          className="border rounded-md px-2 py-1 text-sm"
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
         >
           <option value="early">Early Career</option>
           <option value="middle">Middle Career</option>
           <option value="late">Late Career</option>
         </select>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <SummaryCard title="Total Income" amount={totalIncome} icon={TrendingUp} color="text-green-600" />
-        <SummaryCard title="Total Expenses" amount={totalExpenses} icon={TrendingDown} color="text-red-600" />
-        <SummaryCard title="Net Income" amount={netIncome} icon={Wallet} color={netIncome >= 0 ? "text-blue-600" : "text-orange-600"} />
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <TransactionList transactions={filteredTransactions} />
-        </div>
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-xl font-semibold mb-4">Quick Stats</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-600">Avg. Income</p>
-                <p className="text-lg font-medium text-green-600">
-                  ${averageIncome.toFixed(2)}
-                </p>
-              </div>
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-600">Avg. Expense</p>
-                <p className="text-lg font-medium text-red-600">
-                  ${averageExpense.toFixed(2)}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-xl font-semibold mb-4">Income vs Expenses</h3>
-            <div className="h-64">
-              <Bar data={chartData} options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                  title: {
-                    display: true,
-                    text: 'Monthly Overview'
-                  }
-                },
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    title: {
-                      display: true,
-                      text: 'Amount ($)'
-                    }
-                  },
-                  x: {
-                    title: {
-                      display: true,
-                      text: 'Category'
-                    }
-                  }
-                },
-              }} />
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div className="transaction-history mt-8">
-        <h3 className="text-2xl font-semibold mb-4">Transaction History</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="py-2 px-4 text-left">Date</th>
-                <th className="py-2 px-4 text-left">Name</th>
-                <th className="py-2 px-4 text-left">Details</th>
-                <th className="py-2 px-4 text-left">Amount</th>
-                <th className="py-2 px-4 text-left">Type</th>
-                <th className="py-2 px-4 text-left">Category</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTransactions.map((transaction, index) => {
-                const { name, details } = splitDescription(transaction.description);
-                return (
-                  <tr key={transaction.transaction_id || index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                    <td className="py-2 px-4">{transaction.date}</td>
-                    <td className="py-2 px-4">{name}</td>
-                    <td className="py-2 px-4">{details}</td>
-                    <td className={`py-2 px-4 ${transaction.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      ${Math.abs(transaction.amount).toFixed(2)}
-                    </td>
-                    <td className="py-2 px-4 capitalize">{transaction.type}</td>
-                    <td className="py-2 px-4">{transaction.category}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+      <div className="space-y-6">
+        {/* Summary Cards */}
+        <div className="grid grid-cols-3 gap-4">
+          <SummaryCard
+            title="Total Income"
+            amount={totalIncome}
+            icon={TrendingUp}
+            color="text-green-600"
+          />
+          <SummaryCard
+            title="Total Expenses"
+            amount={totalExpensesAmount}
+            icon={TrendingDown}
+            color="text-red-600"
+          />
+          <SummaryCard
+            title="Net Income"
+            amount={netIncome}
+            icon={Wallet}
+            color={netIncome >= 0 ? "text-blue-600" : "text-orange-600"}
+          />
+        </div>
+
+        {/* Main Content Area */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Transaction History - Slimmer */}
+          <div className="lg:col-span-1 bg-white rounded-xl shadow-sm p-4">
+            <div className="h-[600px] overflow-y-auto">
+              <TransactionList transactions={filteredTransactions} />
+            </div>
+          </div>
+
+          {/* Budget and Expenses Breakdown */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Budget Section */}
+            <div className="bg-white rounded-xl shadow-sm p-4">
+              <h3 className="text-xl font-semibold mb-4">Recommended Budget</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {expenseCategories.map((category, index) => (
+                  <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="text-md font-semibold">{category.name}</h4>
+                      <p className="text-sm text-gray-600">
+                        ${adjustedBudget[category.name]?.amount?.toFixed(2) || "0.00"}
+                      </p>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="1"
+                      value={adjustedBudget[category.name]?.percentage || recommendedBudget[category.name]?.percentage || 0}
+                      onChange={(e) => handleBudgetChange(category.name, parseFloat(e.target.value))}
+                      className="w-full h-2 bg-emerald-200 rounded-lg"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Expenses Breakdown */}
+            <div className="bg-white rounded-xl shadow-sm p-4">
+              <h3 className="text-xl font-semibold mb-4">Expenses Breakdown</h3>
+              <div className="h-[300px]">
+                <Doughnut
+                  data={expenseData}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        position: "right",
+                      },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

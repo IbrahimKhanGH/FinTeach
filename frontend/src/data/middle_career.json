@@ -20,10 +20,10 @@
       }
     },
     "retirement_readiness": {
-      "grade": "C",
+      "grade": "C-",
       "retirement_goal": 800000,
       "projected_savings": 400000,
-      "percentage_of_goal": 50
+      "percentage_of_goal": 72
     },
     "transactions": [
       {
