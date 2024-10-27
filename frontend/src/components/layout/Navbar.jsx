@@ -17,7 +17,7 @@ function Navbar() {
     return (
       <Link
         to={to}
-        className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors duration-150 ease-in-out focus:outline-none focus:bg-opacity-10 focus:bg-fidelity-green ${
+        className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors duration-150 ease-in-out focus:outline-none ${
           isActive
             ? "bg-fidelity-green text-white"
             : "text-gray-700 hover:bg-gray-100"
@@ -61,15 +61,12 @@ function Navbar() {
             </div>
           </div>
 
-
-          {/* Desktop Navigation, Chat button, and Profile menu */}
+          {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/retirement">Retirement</NavLink>
             <NavLink to="/income-expenses">Income/Expenses</NavLink>
             <NavLink to="/educationresources">Education Resources</NavLink>
-          {/* Chat button and profile menu */}
-          <div className="flex items-center">
 
             {/* Chat button */}
             <button
@@ -90,7 +87,6 @@ function Navbar() {
                 <User className="h-6 w-6 text-gray-500" />
               </div>
             </button>
-          </div>
 
             {/* Profile dropdown */}
             {profileMenuOpen && (
@@ -115,20 +111,21 @@ function Navbar() {
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="sm:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/dashboard">Dashboard</NavLink>
-              <NavLink to="/retirement">Retirement</NavLink>
-              <NavLink to="/income-expenses">Income/Expenses</NavLink>
-              <NavLink to="/educationresources">Education Resources</NavLink>
-              <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-              <NavLink to="/settings">Settings</NavLink>
-            </div>
-
+      {/* Mobile Navigation */}
+      {mobileMenuOpen && (
+        <div className="sm:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink to="/retirement">Retirement</NavLink>
+            <NavLink to="/income-expenses">Income/Expenses</NavLink>
+            <NavLink to="/educationresources">Education Resources</NavLink>
+            <NavLink to="/plaid-demo">Plaid Demo</NavLink>
+            <NavLink to="/settings">Settings</NavLink>
           </div>
         </div>
       )}
