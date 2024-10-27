@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import fidelityLogo from "/fidelity.svg";
-import Chatbox from "../chatbot/chatbox"; // Import the Chatbox component
-import { User, LogOut, Settings, MessageSquare } from "lucide-react"; // MessageSquare icon for the chat button
+import Chatbox from "../chatbot/chatbox";
+import { User, LogOut, Settings, MessageSquare } from "lucide-react";
 import greenpiggy from "/Green Piggy Bank with Graduation Cap.png";
-
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [chatboxOpen, setChatboxOpen] = useState(false); // State to control Chatbox visibility
+  const [chatboxOpen, setChatboxOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -55,16 +54,19 @@ function Navbar() {
                     marginBottom: "4px",
                     marginLeft: "3px",
                   }}
-                  className="flex w-full items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
                 >
+                  FinTeach
+                </div>
               </Link>
-            {/* Desktop Navigation */}
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <NavLink to="/dashboard">Dashboard</NavLink>
-              <NavLink to="/retirement">Retirement</NavLink>
-              <NavLink to="/income-expenses">Income/Expenses</NavLink>
-              <NavLink to="/educationresources">Education Resources</NavLink>
             </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink to="/retirement">Retirement</NavLink>
+            <NavLink to="/income-expenses">Income/Expenses</NavLink>
+            <NavLink to="/educationresources">Education Resources</NavLink>
           </div>
 
           {/* Chat button and profile menu */}
@@ -104,6 +106,9 @@ function Navbar() {
                   onClick={() => {
                     setProfileMenuOpen(false);
                     handleLogout();
+                  }}
+                  className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                >
                   <LogOut className="mr-3 h-5 w-5" />
                   Logout
                 </button>
@@ -111,7 +116,9 @@ function Navbar() {
             )}
           </div>
         </div>
+      </div>
 
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="sm:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1">
@@ -120,10 +127,12 @@ function Navbar() {
             <NavLink to="/retirement">Retirement</NavLink>
             <NavLink to="/income-expenses">Income/Expenses</NavLink>
             <NavLink to="/educationresources">Education Resources</NavLink>
-            <NavLink to="/plaid-demo">Plaid Demo</NavLink>
           </div>
         </div>
       )}
+
+      {/* Chatbox Component */}
+      {chatboxOpen && <Chatbox />}
     </nav>
   );
 }
