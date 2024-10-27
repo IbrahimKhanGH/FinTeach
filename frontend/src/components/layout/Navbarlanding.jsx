@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import fidelityLogo from "/fidelity.svg";
 
-function Navbar() {
+function NavbarLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -27,31 +27,29 @@ function Navbar() {
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <img className="h-8 w-auto" src={fidelityLogo} alt="Logo" />
+            <img className="h-8 w-auto" src={fidelityLogo} alt="Logo" />
+            {/* Link component wrapping FinTeach for routing */}
+            <Link to="/" className="ml-2">
               <div
                 className="inline-block font-sans text-4xl font-bold tracking-tight"
                 style={{
-                  color: "#5aa832",
-                  transform: "skew(-10deg)",
+                  color: "#5aa832", // Fidelity's signature green color
+                  transform: "skew(-10deg)", // Slight forward slant
                   letterSpacing: "-0.02em",
                 }}
               >
                 FinTeach
               </div>
-            </div>
-
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/dashboard">Dashboard</NavLink>
-              <NavLink to="/retirement">Retirement</NavLink>
-              <NavLink to="/income-expenses">Income/Expenses</NavLink>
-              <NavLink to="/educationresources">Education Resources</NavLink>
-              <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-              <NavLink to="/settings">Settings</NavLink>
-            </div>
+            </Link>
           </div>
 
+          {/* Desktop Links for Login and Sign Up */}
+          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/signup">Sign Up</NavLink>
+          </div>
+
+          {/* Mobile Menu Button */}
           <div className="flex items-center sm:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -76,16 +74,12 @@ function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="sm:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/dashboard">Dashboard</NavLink>
-            <NavLink to="/retirement">Retirement</NavLink>
-            <NavLink to="/income-expenses">Income/Expenses</NavLink>
-            <NavLink to="/educationresources">Education Resources</NavLink>
-            <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-            <NavLink to="/settings">Settings</NavLink>
+            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/signup">Sign Up</NavLink>
           </div>
         </div>
       )}
@@ -93,4 +87,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavbarLanding;
