@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import fidelityLogo from "/fidelity.svg";
 import Chatbox from "../chatbot/chatbox"; // Import the Chatbox component
 import { User, LogOut, Settings, MessageSquare } from "lucide-react"; // MessageSquare icon for the chat button
+import greenpiggy from "/Green Piggy Bank with Graduation Cap.png";
+
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -39,20 +41,23 @@ function Navbar() {
         <div className="flex justify-between h-16">
           {/* Logo and FinTeach title */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center">
-              <img className="h-8 w-auto" src={fidelityLogo} alt="Logo" />
-              <div
-                className="ml-2 font-sans text-4xl font-bold tracking-tight"
-                style={{
-                  color: "#5aa832",
-                  transform: "skew(-10deg)",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                FinTeach
-              </div>
-            </Link>
-
+            <div className="flex-shrink-0 flex items-center">
+              <Link to="/">
+                <img className="h-12 w-auto" src={greenpiggy} alt="Logo" />
+              </Link>
+              <Link to="/">
+                <div
+                  className="inline-block font-sans text-4xl font-bold tracking-tight"
+                  style={{
+                    color: "#5aa832",
+                    transform: "skew(-10deg)",
+                    letterSpacing: "-0.02em",
+                    marginBottom: "4px",
+                    marginLeft: "3px",
+                  }}
+                  className="flex w-full items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                >
+              </Link>
             {/* Desktop Navigation */}
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <NavLink to="/dashboard">Dashboard</NavLink>
@@ -101,9 +106,6 @@ function Navbar() {
                   onClick={() => {
                     setProfileMenuOpen(false);
                     handleLogout();
-                  }}
-                  className="flex w-full items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
-                >
                   <LogOut className="mr-3 h-5 w-5" />
                   Logout
                 </button>

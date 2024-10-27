@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import fidelityLogo from "/fidelity.svg";
+import greenpig from "/Green Piggy Bank with Graduation Cap.png";
 
 function NavbarLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,7 +28,7 @@ function NavbarLanding() {
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <img className="h-8 w-auto" src={fidelityLogo} alt="Logo" />
+            <img className="h-8 w-auto" src={greenpig} alt="Logo" />
             {/* Link component wrapping FinTeach for routing */}
             <Link to="/" className="ml-2">
               <div
