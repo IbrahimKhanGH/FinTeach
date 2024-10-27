@@ -1,76 +1,104 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import fidelityLogo from "/fidelity.svg";
+import { User, LogOut, Settings } from "lucide-react";
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const NavLink = ({ to, children }) => {
     const isActive = location.pathname === to;
     return (
       <Link
         to={to}
-        className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+        className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors duration-150 ease-in-out ${
           isActive
-            ? "border-fidelity-green text-gray-900"
-            : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+            ? "bg-fidelity-green text-white"
+            : "text-gray-700 hover:bg-gray-100"
         }`}
+        style={{
+          transform: "skew(-5deg)",
+          letterSpacing: "0.02em",
+        }}
       >
-        {children}
+        <span style={{ transform: "skew(5deg)" }}>{children}</span>
       </Link>
     );
   };
+
+  const handleLogout = () => navigate('/login');
 
   return (
     <nav className="bg-white shadow-sm">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
+          <div className="flex items-center flex-grow">
             <div className="flex-shrink-0 flex items-center">
-              <img className="h-8 w-auto" src={fidelityLogo} alt="Logo" />
-              <div
-                className="inline-block font-sans text-4xl font-bold tracking-tight"
-                style={{
-                  color: "#5aa832",
-                  transform: "skew(-10deg)",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                FinTeach
-              </div>
+              <Link to="/">
+                <img className="h-12 w-auto" src={fidelityLogo} alt="Logo" />
+              </Link>
+              <Link to="/">
+                <div
+                  className="inline-block font-sans text-4xl font-bold tracking-tight"
+                  style={{
+                    color: "#5aa832",
+                    transform: "skew(-10deg)",
+                    letterSpacing: "-0.02em",
+                    marginBottom: "4px",
+                    marginLeft: "3px",
+                  }}
+                >
+                  FinTeach
+                </div>
+              </Link>
             </div>
 
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
               <NavLink to="/dashboard">Dashboard</NavLink>
               <NavLink to="/retirement">Retirement</NavLink>
               <NavLink to="/income-expenses">Income/Expenses</NavLink>
               <NavLink to="/educationresources">Education Resources</NavLink>
               <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-              <NavLink to="/settings">Settings</NavLink>
             </div>
           </div>
 
-          <div className="flex items-center sm:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-fidelity-green"
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+          <div className="flex items-center">
+            <div className="relative">
+              <button
+                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+                className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-fidelity-green focus:ring-offset-2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
+                <span className="sr-only">Open user menu</span>
+                <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                  <User className="h-6 w-6 text-gray-500" />
+                </div>
+              </button>
+              {profileMenuOpen && (
+                <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Link
+                    to="/settings"
+                    className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setProfileMenuOpen(false)}
+                  >
+                    <Settings className="mr-3 h-5 w-5" />
+                    Profile Settings
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setProfileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className="flex w-full items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <LogOut className="mr-3 h-5 w-5" />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -84,7 +112,6 @@ function Navbar() {
             <NavLink to="/income-expenses">Income/Expenses</NavLink>
             <NavLink to="/educationresources">Education Resources</NavLink>
             <NavLink to="/plaid-demo">Plaid Demo</NavLink>
-            <NavLink to="/settings">Settings</NavLink>
           </div>
         </div>
       )}
