@@ -5,11 +5,13 @@ import {
   CategoryScale,
   LinearScale,
   LineElement,
+
   BarElement,
   PointElement,
   Title,
   Tooltip,
   Legend,
+
   ArcElement,
 } from "chart.js";
 import { Line, Pie, Bar } from "react-chartjs-2";
@@ -159,7 +161,8 @@ function Retirement() {
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false,
+    
+    tainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
