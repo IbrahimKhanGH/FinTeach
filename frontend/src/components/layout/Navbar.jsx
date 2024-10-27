@@ -42,7 +42,6 @@ function Navbar() {
             </div>
 
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <NavLink to="/">Home</NavLink>
               <NavLink to="/dashboard">Dashboard</NavLink>
               <NavLink to="/retirement">Retirement</NavLink>
               <NavLink to="/income-expenses">Income/Expenses</NavLink>
