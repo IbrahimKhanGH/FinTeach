@@ -1,5 +1,6 @@
 // src/pages/Dashboard.jsx
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import UpcomingCalendar from "../components/dashboard/UpcomingCalendar";
 import {
   Chart as ChartJS,
@@ -33,7 +34,12 @@ ChartJS.register(
 );
 
 function Dashboard() {
-  const [careerStage, setCareerStage] = useState('early');
+  const navigate = useNavigate();
+  const [careerStage, setCareerStage] = useState(() => {
+    return localStorage.getItem('careerStage') || 'early';
+  });
+
+  const [userName, setUserName] = useState('');
 
   // State variables for financial data
   const [monthlyIncome, setMonthlyIncome] = useState(0);
@@ -69,21 +75,24 @@ function Dashboard() {
     }
   };
 
-  // Update state based on selected career stage
   useEffect(() => {
     let data;
     switch (careerStage) {
       case 'early':
         data = earlyCareerData;
+        setUserName('Alex');
         break;
       case 'middle':
         data = middleCareerData;
+        setUserName('Maria');
         break;
       case 'late':
         data = lateCareerData;
+        setUserName('James');
         break;
       default:
         data = earlyCareerData;
+        setUserName('Alex');
     }
 
     // Update state variables
@@ -113,26 +122,9 @@ function Dashboard() {
       <div className="max-w-7xl mx-auto mb-6">
         <div className="bg-gradient-to-r from-[#025742] to-emerald-800 rounded-lg overflow-hidden shadow-md">
           <div className="px-6 py-4">
-            <h1 className="text-2xl font-bold text-white">Welcome back, {careerStage === 'early' ? 'Alex' : careerStage === 'middle' ? 'Maria' : 'James'}</h1>
+            <h1 className="text-2xl font-bold text-white">Welcome back, {userName}</h1>
             <p className="text-sm text-white/90 mt-1">Here is your financial overview</p>
           </div>
-        </div>
-      </div>
-
-      {/* Career Stage Selection */}
-      <div className="max-w-7xl mx-auto mb-6">
-        <div className="flex items-center space-x-4">
-          <label htmlFor="careerStage" className="font-semibold text-gray-700">Select Career Stage:</label>
-          <select
-            id="careerStage"
-            value={careerStage}
-            onChange={(e) => setCareerStage(e.target.value)}
-            className="border rounded-md px-3 py-2 text-sm"
-          >
-            <option value="early">Early Career</option>
-            <option value="middle">Middle Career</option>
-            <option value="late">Late Career</option>
-          </select>
         </div>
       </div>
 

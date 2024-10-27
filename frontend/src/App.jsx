@@ -10,6 +10,7 @@ import PlaidDemo from './pages/PlaidDemo';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import CareerStageSelection from './pages/CareerStageSelection';
 
 function App() {
   const location = useLocation();
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/career-stage-selection" element={<CareerStageSelection />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/retirement" element={<Retirement />} />
           <Route path="/income-expenses" element={<IncomeExpenses />} />

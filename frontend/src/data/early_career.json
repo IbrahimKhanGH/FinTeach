@@ -4,20 +4,22 @@
     "current_age": 25,
     "retirement_age": 65,
     "years_of_service": 3,
-    "risk_tolerance": "Moderate"
+    "risk_tolerance": "Aggressive"
   },
   "financial_info": {
-    "current_salary": 45000,
-    "monthly_net_income": 3000,
+    "current_salary": 42000,
+    "monthly_net_income": 2800,
     "monthly_expenses": 2300,
     "current_savings": 8000,
+    "retirement_accounts": 0,  
     "monthly_investments": 400,
     "monthly_contributions": {
-      "TRS": 288,         
-      "403b": 150,
-      "IRA": 100,
-      "Other": 50
-    }
+      "TRS": 288,
+      "403b": 100,
+      "IRA": 50,
+      "Other": 0
+    },
+    "expected_salary_growth": 3
   },
   "retirement_readiness": {
     "grade": "F",
@@ -29,7 +31,7 @@
     {
       "date": "2023-10-31",
       "description": "Direct Deposit - School District",
-      "amount": 2500,
+      "amount": 1400,
       "type": "credit",
       "category": "Income"
     },
@@ -92,14 +94,14 @@
     {
       "date": "2023-10-22",
       "description": "Salary Contribution to 403b",
-      "amount": -150,
+      "amount": -100,
       "type": "debit",
       "category": "Investments"
     },
     {
       "date": "2023-10-21",
       "description": "Salary Contribution to IRA",
-      "amount": -100,
+      "amount": -50,
       "type": "debit",
       "category": "Investments"
     },
@@ -140,15 +142,15 @@
     },
     {
       "date": "2023-10-15",
-      "description": "Paycheck Deposit",
-      "amount": 500,
+      "description": "DoorDash Driver Deposit",
+      "amount": 400,
       "type": "credit",
       "category": "Income"
     },
     {
       "date": "2023-09-30",
       "description": "Direct Deposit - School District",
-      "amount": 2500,
+      "amount": 1400,
       "type": "credit",
       "category": "Income"
     },
@@ -190,26 +192,26 @@
     {
       "date": "2023-09-24",
       "description": "Salary Contribution to 403b",
-      "amount": -150,
+      "amount": -100,
       "type": "debit",
       "category": "Investments"
     },
     {
       "date": "2023-09-23",
       "description": "Salary Contribution to IRA",
-      "amount": -100,
+      "amount": -50,
       "type": "debit",
       "category": "Investments"
     }
   ],
   "metrics": {
-    "total_income": 3000,
+    "total_income": 2800,
     "total_expenses": 2300,
-    "net_income": 700,
-    "average_monthly_income": 3000,
+    "net_income": 500,
+    "average_monthly_income": 2800,
     "average_monthly_expense": 2300,
     "income_vs_expenses": {
-      "income": 3000,
+      "income": 2800,
       "expenses": 2300
     }
   }

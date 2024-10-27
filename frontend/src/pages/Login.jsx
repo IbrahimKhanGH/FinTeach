@@ -1,36 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PlaidLink } from 'react-plaid-link';
 
 const Login = () => {
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [linkToken, setLinkToken] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const [credentials, setCredentials] = useState({
-    username: '',
-    password: '',
-  });
-
-  const handleLoginChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const handleLogin = () => {
-    const { username, password } = credentials;
-
-    if (username && password) {
-      // Retrieve user data from localStorage
-      const storedUser = JSON.parse(localStorage.getItem('user'));
-      if (
-        storedUser &&
-        storedUser.username === username &&
-        storedUser.password === password
-      ) {
-        navigate('/dashboard'); // Redirects to Dashboard component
-      } else {
-        alert('Invalid username or password');
+  useEffect(() => {
+    async function fetchLinkToken() {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/create_link_token');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch link token: ${response.statusText}`);
+        }
+        const data = await response.json();
+        if (data.link_token) {
+          setLinkToken(data.link_token);
+        } else {
+          throw new Error('Link token not found in response');
+        }
+      } catch (error) {
+        console.error('Error fetching link token:', error);
+        setError('Failed to fetch link token. Please try again later.');
       }
-    } else {
-      alert('Please enter both username and password');
+    }
+    fetchLinkToken();
+  }, []);
+
+  const handleOnSuccess = async (public_token, metadata) => {
+    try {
+      const exchangeResponse = await fetch('http://127.0.0.1:5000/exchange_public_token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ public_token }),
+      });
+      
+      if (!exchangeResponse.ok) {
+        throw new Error(`Failed to exchange public token: ${exchangeResponse.statusText}`);
+      }
+
+      // If successful, navigate to the career stage selection page
+      navigate('/career-stage-selection');
+    } catch (error) {
+      console.error('Error:', error);
+      setError(`Failed to authenticate: ${error.message}`);
     }
   };
 
@@ -42,68 +56,24 @@ const Login = () => {
           <p className="text-gray-500">Financial Planning for Educators</p>
         </div>
 
-        <button
-          className="w-full py-3 my-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
-          onClick={() => navigate('/signup')}
-        >
-          Create Account
-        </button>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-        <div className="flex items-center my-4 text-gray-500">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="px-4">or</span>
-          <div className="flex-grow border-t border-gray-300"></div>
-        </div>
-
-        <button
-          className="w-full py-3 my-2 bg-white text-blue-900 border border-gray-300 rounded-lg hover:bg-gray-100"
-          onClick={() => setShowLoginForm(!showLoginForm)}
-        >
-          Log In
-        </button>
-
-        {showLoginForm && (
-          <div className="mt-6 space-y-4">
-            <div className="relative">
-              <input
-                type="text"
-                name="username"
-                value={credentials.username}
-                onChange={handleLoginChange}
-                placeholder=" "
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-              />
-              <label
-                htmlFor="username"
-                className="absolute left-4 top-2 transform text-gray-400 transition-all pointer-events-none -translate-y-4 scale-90 bg-white px-1"
-              >
-                Username
-              </label>
-            </div>
-            <div className="relative">
-              <input
-                type="password"
-                name="password"
-                value={credentials.password}
-                onChange={handleLoginChange}
-                placeholder=" "
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-              />
-              <label
-                htmlFor="password"
-                className="absolute left-4 top-2 transform text-gray-400 transition-all pointer-events-none -translate-y-4 scale-90 bg-white px-1"
-              >
-                Password
-              </label>
-            </div>
-            <button
-              className="w-full py-3 mt-4 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800"
-              onClick={handleLogin}
-            >
-              Log In
-            </button>
-          </div>
+        {linkToken ? (
+          <PlaidLink
+            token={linkToken}
+            onSuccess={handleOnSuccess}
+            onExit={(err, metadata) => console.log('Plaid Link exited:', err, metadata)}
+            className="w-full py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 text-center"
+          >
+            Connect Your Bank with Plaid
+          </PlaidLink>
+        ) : (
+          <p className="text-center">Loading...</p>
         )}
+
+        <p className="mt-4 text-center text-sm text-gray-500">
+          By connecting your bank account, you agree to our Terms of Service and Privacy Policy.
+        </p>
       </div>
     </div>
   );

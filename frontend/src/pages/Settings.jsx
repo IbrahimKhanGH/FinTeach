@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { Settings, Eye, EyeOff, LogOut } from 'lucide-react';
-
 import { Settings, Eye, EyeOff, LogOut, User, Lock, ChevronRight } from 'lucide-react';
 
 
