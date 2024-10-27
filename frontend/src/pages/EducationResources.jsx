@@ -7,6 +7,7 @@ const EducationResources = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
+
   const resources = [
     {
       title: "Texas Retirement System (TRS)",
@@ -209,7 +210,7 @@ const EducationResources = () => {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Icon className="h-6 w-6 text-[#025742]" />
+             <Icon className="h-6 w-6 text-[#025742]" />
                         <CardTitle className="text-lg font-semibold text-gray-900">
                           {resource.title}
                         </CardTitle>
