@@ -1,5 +1,5 @@
 // src/pages/Dashboard.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UpcomingCalendar from "../components/dashboard/UpcomingCalendar";
 import {
   Chart as ChartJS,
@@ -15,6 +15,11 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
+// Import JSON data for different career stages
+import earlyCareerData from '../data/early_career.json';
+import middleCareerData from '../data/middle_career.json';
+import lateCareerData from '../data/late_career.json';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -28,12 +33,15 @@ ChartJS.register(
 );
 
 function Dashboard() {
-  const [monthlyIncome] = useState(5000);
-  const [monthlyExpenses] = useState(3800);
-  const [currentSavings] = useState(45000);
-  const [savingsGoal] = useState(100000);
-  const [monthlyInvestments] = useState(800); // New: Monthly investments
-  const [retirementReadiness] = useState(65); // Placeholder for retirement readiness score out of 100
+  const [careerStage, setCareerStage] = useState('early');
+
+  // State variables for financial data
+  const [monthlyIncome, setMonthlyIncome] = useState(0);
+  const [monthlyExpenses, setMonthlyExpenses] = useState(0);
+  const [currentSavings, setCurrentSavings] = useState(0);
+  const [savingsGoal, setSavingsGoal] = useState(0);
+  const [monthlyInvestments, setMonthlyInvestments] = useState(0);
+  const [retirementReadiness, setRetirementReadiness] = useState(0);
 
   const getRetirementGrade = (score) => {
     if (score >= 90) return "A+";
@@ -43,6 +51,50 @@ function Dashboard() {
     if (score >= 50) return "D";
     return "F";
   };
+
+  const getRetirementGradeColor = (grade) => {
+    switch (grade) {
+      case "A+":
+      case "A":
+        return "#16a34a"; // green-600
+      case "B":
+        return "#f97316"; // orange-500
+      case "C":
+        return "#eab308"; // yellow-500
+      case "D":
+      case "F":
+        return "#dc2626"; // red-600
+      default:
+        return "#4b5563"; // gray-600
+    }
+  };
+
+  // Update state based on selected career stage
+  useEffect(() => {
+    let data;
+    switch (careerStage) {
+      case 'early':
+        data = earlyCareerData;
+        break;
+      case 'middle':
+        data = middleCareerData;
+        break;
+      case 'late':
+        data = lateCareerData;
+        break;
+      default:
+        data = earlyCareerData;
+    }
+
+    // Update state variables
+    setMonthlyIncome(data.financial_info.monthly_net_income);
+    setMonthlyExpenses(data.financial_info.monthly_expenses);
+    setCurrentSavings(data.financial_info.current_savings);
+    setSavingsGoal(data.retirement_readiness.retirement_goal);
+    setMonthlyInvestments(data.financial_info.monthly_investments);
+    setRetirementReadiness(data.retirement_readiness.percentage_of_goal);
+
+  }, [careerStage]);
 
   const cashFlowData = {
     labels: ["Income", "Expenses"],
@@ -56,14 +108,31 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-6">
       {/* Top Section */}
-      <div className="max-w-7xl mx-auto mb-8">
-        <div className="bg-gradient-to-r from-[#025742] to-emerald-800 rounded-2xl overflow-hidden shadow-lg">
-          <div className="px-6 lg:px-12 py-8 lg:py-12">
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome back, Ibrahim</h1>
-            <p className="text-lg text-white/90">Here's an overview of your financial health</p>
+      <div className="max-w-7xl mx-auto mb-6">
+        <div className="bg-gradient-to-r from-[#025742] to-emerald-800 rounded-lg overflow-hidden shadow-md">
+          <div className="px-6 py-4">
+            <h1 className="text-2xl font-bold text-white">Welcome back, {careerStage === 'early' ? 'Alex' : careerStage === 'middle' ? 'Maria' : 'James'}</h1>
+            <p className="text-sm text-white/90 mt-1">Here is your financial overview</p>
           </div>
+        </div>
+      </div>
+
+      {/* Career Stage Selection */}
+      <div className="max-w-7xl mx-auto mb-6">
+        <div className="flex items-center space-x-4">
+          <label htmlFor="careerStage" className="font-semibold text-gray-700">Select Career Stage:</label>
+          <select
+            id="careerStage"
+            value={careerStage}
+            onChange={(e) => setCareerStage(e.target.value)}
+            className="border rounded-md px-3 py-2 text-sm"
+          >
+            <option value="early">Early Career</option>
+            <option value="middle">Middle Career</option>
+            <option value="late">Late Career</option>
+          </select>
         </div>
       </div>
 
@@ -88,14 +157,14 @@ function Dashboard() {
                     a 15.9155 15.9155 0 0 1 0 31.831
                     a 15.9155 15.9155 0 0 1 0 -31.831"
                   fill="none"
-                  stroke="#3b82f6"
+                  stroke={getRetirementGradeColor(getRetirementGrade(retirementReadiness))}
                   strokeWidth="3"
                   strokeDasharray={`${retirementReadiness}, 100`}
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-4xl font-bold">{retirementReadiness}%</span>
-                <span className="text-2xl font-bold text-[#025742]">
+                <span className={`text-2xl font-bold`} style={{ color: getRetirementGradeColor(getRetirementGrade(retirementReadiness)) }}>
                   {getRetirementGrade(retirementReadiness)}
                 </span>
               </div>
@@ -136,6 +205,11 @@ function Dashboard() {
                   responsive: true,
                   maintainAspectRatio: false,
                   plugins: { legend: { display: false } },
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                    },
+                  },
                 }}
               />
             </div>
@@ -146,20 +220,44 @@ function Dashboard() {
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
               Recent Transactions
             </h3>
-            <ul className="space-y-3">
-              {[
-                { date: "10/25", name: "Think Academy", amount: "$500.00" },
-                { date: "10/24", name: "Interest Charge", amount: "$25.00" },
-                { date: "10/23", name: "App Store Subscriptions", amount: "$19.99" },
-              ].map((transaction, index) => (
+            <ul className="space-y-3 max-h-80 overflow-y-auto">
+              {careerStage === 'early' && earlyCareerData.transactions.slice(0, 5).map((transaction, index) => (
                 <li
                   key={index}
                   className="flex justify-between text-sm text-gray-700 bg-gray-50 p-3 rounded-lg"
                 >
                   <span>
-                    {transaction.date} - {transaction.name}
+                    {transaction.date} - {transaction.description}
                   </span>
-                  <span className="font-semibold">{transaction.amount}</span>
+                  <span className={`font-semibold ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}>
+                    ${Math.abs(transaction.amount).toFixed(2)}
+                  </span>
+                </li>
+              ))}
+              {careerStage === 'middle' && middleCareerData.transactions.slice(0, 5).map((transaction, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between text-sm text-gray-700 bg-gray-50 p-3 rounded-lg"
+                >
+                  <span>
+                    {transaction.date} - {transaction.description}
+                  </span>
+                  <span className={`font-semibold ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}>
+                    ${Math.abs(transaction.amount).toFixed(2)}
+                  </span>
+                </li>
+              ))}
+              {careerStage === 'late' && lateCareerData.transactions.slice(0, 5).map((transaction, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between text-sm text-gray-700 bg-gray-50 p-3 rounded-lg"
+                >
+                  <span>
+                    {transaction.date} - {transaction.description}
+                  </span>
+                  <span className={`font-semibold ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}>
+                    ${Math.abs(transaction.amount).toFixed(2)}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -172,8 +270,9 @@ function Dashboard() {
             Financial Tip of the Day
           </h3>
           <p className="text-sm text-gray-700 bg-green-50 border-l-4 border-[#025742] p-4 rounded-r-lg">
-            Did you know you can deduct up to $250 of unreimbursed classroom
-            expenses on your federal taxes?
+            {careerStage === 'early' && "Start saving early to take advantage of compound interest over time."}
+            {careerStage === 'middle' && "Consider increasing your retirement contributions as your salary grows."}
+            {careerStage === 'late' && "Review your retirement plan to ensure you're on track to meet your goals."}
           </p>
         </div>
       </div>

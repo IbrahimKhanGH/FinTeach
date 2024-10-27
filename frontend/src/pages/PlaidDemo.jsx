@@ -121,8 +121,8 @@ function PlaidDemo() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Financial Dashboard for Texas Teacher</h1>
+    <div className="bg-gray-50 bg-opacity-50 p-6 rounded-lg">
+      <h1 className="text-2xl font-bold mb-4">Financial Dashboard for Texas Teacher</h1>
       
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
