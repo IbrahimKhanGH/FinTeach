@@ -1,9 +1,12 @@
-import React from 'react';
-import { ExternalLink, BookOpen, Calculator, Building, Users, Library, Heart, FileText, Landmark } from 'lucide-react';
+import React, { useState } from 'react';
+import { ExternalLink, BookOpen, Calculator, Building, Users, Library, Heart, FileText, Landmark, Search } from 'lucide-react';
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from '../components/shared/Card';
 
 
 const EducationResources = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
   const resources = [
     {
       title: "Texas Retirement System (TRS)",
@@ -147,16 +150,52 @@ const EducationResources = () => {
     }
   ];
 
+  const categories = ['All', ...new Set(resources.map(resource => resource.category))];
+
+  const filteredResources = resources.filter(resource => 
+    (selectedCategory === 'All' || resource.category === selectedCategory) &&
+    (resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     resource.description.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <header className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-blue-900 mb-4">Education Resources</h1>
-          <p className="text-lg text-slate-600">Comprehensive resources for Texas educators</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Education Resources</h1>
+          <p className="text-xl text-gray-600">Comprehensive resources for Texas educators</p>
         </header>
 
+        <div className="mb-8 flex flex-col sm:flex-row justify-between items-center">
+          <div className="relative w-full sm:w-64 mb-4 sm:mb-0">
+            <input
+              type="text"
+              placeholder="Search resources..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#025742]"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+          </div>
+          <div className="flex space-x-2 overflow-x-auto pb-2">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === category
+                    ? 'bg-[#025742] text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {resources.map((resource, index) => {
+          {filteredResources.map((resource, index) => {
             const Icon = resource.icon;
             return (
               <a
@@ -170,19 +209,19 @@ const EducationResources = () => {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Icon className="h-6 w-6 text-blue-600" />
-                        <CardTitle className="text-lg font-semibold text-slate-800">
+                        <Icon className="h-6 w-6 text-[#025742]" />
+                        <CardTitle className="text-lg font-semibold text-gray-900">
                           {resource.title}
                         </CardTitle>
                       </div>
-                      <ExternalLink className="h-4 w-4 text-slate-400" />
+                      <ExternalLink className="h-4 w-4 text-gray-400" />
                     </div>
-                    <CardDescription className="text-slate-600">
+                    <CardDescription className="text-gray-600 mt-2">
                       {resource.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                    <div className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[#025742] bg-opacity-10 text-[#025742]">
                       {resource.category}
                     </div>
                   </CardContent>

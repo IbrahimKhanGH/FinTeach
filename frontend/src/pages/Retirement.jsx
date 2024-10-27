@@ -78,6 +78,15 @@ function Retirement() {
         beginAtZero: true,
       },
     },
+    elements: {
+      line: {
+        borderColor: 'rgba(16, 185, 129, 0.8)', // Light green color
+        backgroundColor: 'rgba(16, 185, 129, 0.2)', // Light green with opacity
+      },
+      point: {
+        backgroundColor: 'rgba(16, 185, 129, 1)', // Solid light green for points
+      }
+    }
   };
 
   // Calculate Projected Savings
@@ -115,7 +124,7 @@ function Retirement() {
       {
         label: "Projected Savings ($)",
         data: projectedSavingsOverTime,
-        borderColor: "#3b82f6",
+        borderColor: "#5aa832",
         backgroundColor: "rgba(59, 130, 246, 0.2)",
         fill: true,
       },
@@ -220,15 +229,30 @@ function Retirement() {
     )
   };
 
+  // Add this function to calculate savings milestones
+  const calculateSavingsMilestones = () => {
+    const milestones = [100000, 250000, 500000, 1000000];
+    return milestones.map(milestone => {
+      const yearsToMilestone = projectedSavingsOverTime.findIndex(savings => savings >= milestone);
+      return {
+        milestone: `$${milestone.toLocaleString()}`,
+        age: yearsToMilestone === -1 ? 'N/A' : currentAge + yearsToMilestone,
+      };
+    });
+  };
+
+  const savingsMilestones = calculateSavingsMilestones();
+
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-50 min-h-screen">
       <div className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold text-center mb-8">Retirement Planning</h1>
+        <h1 className="text-3xl font-bold text-center mb-2 text-[#025742]">Retirement Planning</h1>
+        <p className="text-lg text-center mb-8 text-gray-600">Plan your financial future with confidence</p>
         
         <div className="flex flex-col lg:flex-row gap-8 mb-8">
           {/* Left column: Your Information */}
           <div className="bg-white p-6 rounded-lg shadow lg:w-1/3">
-            <h2 className="text-2xl font-semibold mb-4">Your Information</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-[#025742]">Your Information</h2>
             
             <div className="space-y-4">
               <div>
@@ -239,7 +263,27 @@ function Retirement() {
                   max="70"
                   value={currentAge}
                   onChange={(e) => setCurrentAge(Number(e.target.value))}
-                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    WebkitAppearance: 'none',
+                    '&::-webkit-slider-thumb': {
+                      WebkitAppearance: 'none',
+                      appearance: 'none',
+                      width: '16px',
+                      height: '16px',
+                      background: '#5aa832',
+                      cursor: 'pointer',
+                      borderRadius: '50%'
+                    },
+                    '&::-moz-range-thumb': {
+                      width: '16px',
+                      height: '16px',
+                      background: '#5aa832',
+                      cursor: 'pointer',
+                      borderRadius: '50%',
+                      border: 'none'
+                    }
+                  }}
                 />
               </div>
               
@@ -251,7 +295,27 @@ function Retirement() {
                   max="70"
                   value={retirementAge}
                   onChange={(e) => setRetirementAge(Number(e.target.value))}
-                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    WebkitAppearance: 'none',
+                    '&::-webkit-slider-thumb': {
+                      WebkitAppearance: 'none',
+                      appearance: 'none',
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%'
+                    },
+                    '&::-moz-range-thumb': {
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%',
+                      border: 'none'
+                    }
+                  }}
                 />
               </div>
               
@@ -279,7 +343,7 @@ function Retirement() {
               </div>
             </div>
             
-            <h3 className="text-xl font-semibold mt-6 mb-3">Monthly Contributions</h3>
+            <h3 className="text-xl font-semibold mt-6 mb-3 text-[#025742]">Monthly Contributions</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">TRS: ${trs}</label>
@@ -289,7 +353,27 @@ function Retirement() {
                   max="1000"
                   value={trs}
                   onChange={(e) => setTrs(Number(e.target.value))}
-                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    WebkitAppearance: 'none',
+                    '&::-webkit-slider-thumb': {
+                      WebkitAppearance: 'none',
+                      appearance: 'none',
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%'
+                    },
+                    '&::-moz-range-thumb': {
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%',
+                      border: 'none'
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -300,7 +384,27 @@ function Retirement() {
                   max="1000"
                   value={four03b}
                   onChange={(e) => setFour03b(Number(e.target.value))}
-                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    WebkitAppearance: 'none',
+                    '&::-webkit-slider-thumb': {
+                      WebkitAppearance: 'none',
+                      appearance: 'none',
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%'
+                    },
+                    '&::-moz-range-thumb': {
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%',
+                      border: 'none'
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -311,7 +415,27 @@ function Retirement() {
                   max="1000"
                   value={ira}
                   onChange={(e) => setIra(Number(e.target.value))}
-                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    WebkitAppearance: 'none',
+                    '&::-webkit-slider-thumb': {
+                      WebkitAppearance: 'none',
+                      appearance: 'none',
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%'
+                    },
+                    '&::-moz-range-thumb': {
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%',
+                      border: 'none'
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -322,12 +446,32 @@ function Retirement() {
                   max="1000"
                   value={otherInvestments}
                   onChange={(e) => setOtherInvestments(Number(e.target.value))}
-                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    WebkitAppearance: 'none',
+                    '&::-webkit-slider-thumb': {
+                      WebkitAppearance: 'none',
+                      appearance: 'none',
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%'
+                    },
+                    '&::-moz-range-thumb': {
+                      width: '16px',
+                      height: '16px',
+                      background: '#025742',
+                      cursor: 'pointer',
+                      borderRadius: '50%',
+                      border: 'none'
+                    }
+                  }}
                 />
               </div>
             </div>
             
-            <p className="mt-4 text-lg font-semibold">
+            <p className="mt-4 text-lg font-semibold text-[#025742]">
               Total Monthly Contribution: ${totalContribution}
             </p>
           </div>
@@ -335,10 +479,10 @@ function Retirement() {
           {/* Right column: Retirement Summary and Graphs */}
           <div className="lg:w-2/3 space-y-8">
             <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-2xl font-semibold mb-4">Retirement Summary</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-[#025742]">Retirement Summary</h2>
               <p className="text-lg mb-2">
                 At age {retirementAge}, you will have approximately{" "}
-                <span className="font-semibold">
+                <span className="font-semibold text-emerald-600">
                   ${projectedSavingsAtRetirement.toLocaleString(undefined, {
                     maximumFractionDigits: 0,
                   })}
@@ -347,7 +491,7 @@ function Retirement() {
               </p>
               <p className="text-lg">
                 Estimated Annual TRS Pension Benefit:{" "}
-                <span className="font-semibold">
+                <span className="font-semibold text-emerald-600">
                   ${estimateTrsPension().toLocaleString(undefined, {
                     maximumFractionDigits: 0,
                   })}
@@ -358,12 +502,16 @@ function Retirement() {
             {/* Graph section with switcher */}
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="flex flex-wrap justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold mb-2">Retirement Projections</h3>
+                <h3 className="text-xl font-semibold mb-2 text-[#025742]">Retirement Projections</h3>
                 <div className="space-x-2 mb-2">
                   {Object.keys(graphComponents).map((graphType) => (
                     <button
                       key={graphType}
-                      className={`px-3 py-1 rounded mb-1 ${activeGraph === graphType ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                      className={`px-3 py-1 rounded mb-1 ${
+                        activeGraph === graphType
+                          ? "bg-[#025742] text-white"
+                          : "bg-gray-200 hover:bg-gray-300 text-gray-700"
+                      }`}
                       onClick={() => setActiveGraph(graphType)}
                     >
                       {graphType.charAt(0).toUpperCase() + graphType.slice(1)}
@@ -378,17 +526,21 @@ function Retirement() {
             
             {/* Savings Milestones Table */}
             <div className="bg-white p-6 rounded-lg shadow mt-8">
-              <h3 className="text-xl font-semibold mb-4">Savings Milestones</h3>
+              <h3 className="text-xl font-semibold mb-4 text-[#025742]">Savings Milestones</h3>
               <table className="w-full">
-                <thead>
+                <thead className="bg-emerald-100">
                   <tr>
-                    <th className="text-left">Milestone</th>
-                    <th className="text-left">Target Amount</th>
-                    <th className="text-left">Projected Age</th>
+                    <th className="text-left p-2">Milestone</th>
+                    <th className="text-left p-2">Projected Age</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {/* ... table content ... */}
+                  {savingsMilestones.map((milestone, index) => (
+                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : ''}>
+                      <td className="p-2">{milestone.milestone}</td>
+                      <td className="p-2">{milestone.age}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
