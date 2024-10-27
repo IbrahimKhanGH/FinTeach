@@ -13,7 +13,11 @@ import {
   ArcElement,
 } from "chart.js";
 import { Line, Pie, Bar } from "react-chartjs-2";
-import mockRetirementData from "../data/mockRetirementData";
+
+// Import JSON data for different career stages
+import earlyCareerData from "../data/early_career.json";
+import middleCareerData from "../data/middle_career.json";
+import lateCareerData from "../data/late_career.json";
 
 ChartJS.register(
   CategoryScale,
@@ -28,22 +32,108 @@ ChartJS.register(
 );
 
 function Retirement() {
+  // Career Stage Selection
+  const [careerStage, setCareerStage] = useState('early');
+
+  // Initial Data State
+  const [initialData, setInitialData] = useState({});
+
   // State Variables
-  const [trs, setTrs] = useState(500); // TRS monthly contribution
-  const [four03b, setFour03b] = useState(300); // 403(b) monthly contribution
-  const [ira, setIra] = useState(200); // IRA monthly contribution
+  const [trs, setTrs] = useState(0); // TRS monthly contribution
+  const [four03b, setFour03b] = useState(0); // 403(b) monthly contribution
+  const [ira, setIra] = useState(0); // IRA monthly contribution
   const [otherInvestments, setOtherInvestments] = useState(0); // Other investments
 
-  const [currentAge, setCurrentAge] = useState(30);
+  const [currentAge, setCurrentAge] = useState(0);
   const [retirementAge, setRetirementAge] = useState(65);
-  const [currentSavings, setCurrentSavings] = useState(20000);
-  const [yearsOfService, setYearsOfService] = useState(5); // Years already worked
+  const [currentSavings, setCurrentSavings] = useState(0);
+  const [yearsOfService, setYearsOfService] = useState(0); // Years already worked
   const [salaryGrowthRate, setSalaryGrowthRate] = useState(2); // Annual salary increase %
-
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
   // Investment Growth Rate based on risk tolerance
   const [riskTolerance, setRiskTolerance] = useState("moderate"); // Options: 'conservative', 'moderate', 'aggressive'
+
+  // Total monthly contribution
+  const [totalContribution, setTotalContribution] = useState(0);
+
+  // Effect to update initial data based on career stage
+  useEffect(() => {
+    let data;
+    switch (careerStage) {
+      case 'early':
+        data = earlyCareerData;
+        break;
+      case 'middle':
+        data = middleCareerData;
+        break;
+      case 'late':
+        data = lateCareerData;
+        break;
+      default:
+        data = earlyCareerData;
+    }
+
+    // Extract necessary data from the selected career stage
+    const personalInfo = data.personal_info;
+    const financialInfo = data.financial_info;
+
+    // Set initial data state
+    const initData = {
+      trs: financialInfo.monthly_contributions.TRS || 0,
+      four03b: financialInfo.monthly_contributions["403b"] || 0,
+      ira: financialInfo.monthly_contributions.IRA || 0,
+      otherInvestments: financialInfo.monthly_contributions.Other || 0,
+      currentAge: personalInfo.current_age || 25,
+      retirementAge: personalInfo.retirement_age || 65,
+      currentSavings: financialInfo.current_savings || 0,
+      yearsOfService: personalInfo.years_of_service || 0,
+      riskTolerance: personalInfo.risk_tolerance.toLowerCase() || "moderate",
+    };
+
+    setInitialData(initData);
+
+    // Initialize state variables with user's data
+    setTrs(initData.trs);
+    setFour03b(initData.four03b);
+    setIra(initData.ira);
+    setOtherInvestments(initData.otherInvestments);
+    setCurrentAge(initData.currentAge);
+    setRetirementAge(initData.retirementAge);
+    setCurrentSavings(initData.currentSavings);
+    setYearsOfService(initData.yearsOfService);
+    setRiskTolerance(initData.riskTolerance);
+
+    // Update total contribution
+    setTotalContribution(
+      initData.trs + initData.four03b + initData.ira + initData.otherInvestments
+    );
+  }, [careerStage]);
+
+  // Function to reset values to initial data
+  const resetToInitialData = () => {
+    setTrs(initialData.trs);
+    setFour03b(initialData.four03b);
+    setIra(initialData.ira);
+    setOtherInvestments(initialData.otherInvestments);
+    setCurrentAge(initialData.currentAge);
+    setRetirementAge(initialData.retirementAge);
+    setCurrentSavings(initialData.currentSavings);
+    setYearsOfService(initialData.yearsOfService);
+    setRiskTolerance(initialData.riskTolerance);
+
+    // Update total contribution
+    setTotalContribution(
+      initialData.trs +
+      initialData.four03b +
+      initialData.ira +
+      initialData.otherInvestments
+    );
+  };
+
+  // Update total contribution when any contribution changes
+  useEffect(() => {
+    setTotalContribution(trs + four03b + ira + otherInvestments);
+  }, [trs, four03b, ira, otherInvestments]);
 
   // Determine annual growth rate
   const getAnnualGrowthRate = () => {
@@ -61,9 +151,6 @@ function Retirement() {
 
   const annualGrowthRate = getAnnualGrowthRate();
 
-  // Total monthly contribution
-  const totalContribution = trs + four03b + ira + otherInvestments;
-
   // Number of years until retirement
   const yearsUntilRetirement = retirementAge - currentAge;
 
@@ -76,6 +163,11 @@ function Retirement() {
     scales: {
       y: {
         beginAtZero: true,
+        ticks: {
+          callback: function (value) {
+            return '$' + value.toLocaleString();
+          }
+        }
       },
     },
     elements: {
@@ -85,6 +177,15 @@ function Retirement() {
       },
       point: {
         backgroundColor: 'rgba(16, 185, 129, 1)', // Solid light green for points
+      }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            return '$' + context.parsed.y.toLocaleString();
+          }
+        }
       }
     }
   };
@@ -248,12 +349,35 @@ function Retirement() {
       <div className="container mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold text-center mb-2 text-[#025742]">Retirement Planning</h1>
         <p className="text-lg text-center mb-8 text-gray-600">Plan your financial future with confidence</p>
-        
+
+        {/* Career Stage Selection */}
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center space-x-4">
+            <label htmlFor="careerStage" className="font-semibold text-gray-700">Select Career Stage:</label>
+            <select
+              id="careerStage"
+              value={careerStage}
+              onChange={(e) => setCareerStage(e.target.value)}
+              className="border rounded-md px-3 py-2 text-sm"
+            >
+              <option value="early">Early Career</option>
+              <option value="middle">Middle Career</option>
+              <option value="late">Late Career</option>
+            </select>
+            <button
+              onClick={resetToInitialData}
+              className="ml-4 bg-[#025742] text-white px-4 py-2 rounded-md hover:bg-[#013D2C] transition"
+            >
+              Reset to My Info
+            </button>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-8 mb-8">
           {/* Left column: Your Information */}
           <div className="bg-white p-6 rounded-lg shadow lg:w-1/3">
             <h2 className="text-2xl font-semibold mb-4 text-[#025742]">Your Information</h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Current Age: {currentAge}</label>
@@ -264,29 +388,9 @@ function Retirement() {
                   value={currentAge}
                   onChange={(e) => setCurrentAge(Number(e.target.value))}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    WebkitAppearance: 'none',
-                    '&::-webkit-slider-thumb': {
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      width: '16px',
-                      height: '16px',
-                      background: '#5aa832',
-                      cursor: 'pointer',
-                      borderRadius: '50%'
-                    },
-                    '&::-moz-range-thumb': {
-                      width: '16px',
-                      height: '16px',
-                      background: '#5aa832',
-                      cursor: 'pointer',
-                      borderRadius: '50%',
-                      border: 'none'
-                    }
-                  }}
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium mb-1">Retirement Age: {retirementAge}</label>
                 <input
@@ -296,29 +400,9 @@ function Retirement() {
                   value={retirementAge}
                   onChange={(e) => setRetirementAge(Number(e.target.value))}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    WebkitAppearance: 'none',
-                    '&::-webkit-slider-thumb': {
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%'
-                    },
-                    '&::-moz-range-thumb': {
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%',
-                      border: 'none'
-                    }
-                  }}
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium mb-1">Current Savings</label>
                 <input
@@ -328,7 +412,7 @@ function Retirement() {
                   className="w-full p-2 border rounded text-sm"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium mb-1">Risk Tolerance</label>
                 <select
@@ -342,7 +426,7 @@ function Retirement() {
                 </select>
               </div>
             </div>
-            
+
             <h3 className="text-xl font-semibold mt-6 mb-3 text-[#025742]">Monthly Contributions</h3>
             <div className="space-y-4">
               <div>
@@ -354,26 +438,6 @@ function Retirement() {
                   value={trs}
                   onChange={(e) => setTrs(Number(e.target.value))}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    WebkitAppearance: 'none',
-                    '&::-webkit-slider-thumb': {
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%'
-                    },
-                    '&::-moz-range-thumb': {
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%',
-                      border: 'none'
-                    }
-                  }}
                 />
               </div>
               <div>
@@ -385,26 +449,6 @@ function Retirement() {
                   value={four03b}
                   onChange={(e) => setFour03b(Number(e.target.value))}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    WebkitAppearance: 'none',
-                    '&::-webkit-slider-thumb': {
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%'
-                    },
-                    '&::-moz-range-thumb': {
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%',
-                      border: 'none'
-                    }
-                  }}
                 />
               </div>
               <div>
@@ -416,26 +460,6 @@ function Retirement() {
                   value={ira}
                   onChange={(e) => setIra(Number(e.target.value))}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    WebkitAppearance: 'none',
-                    '&::-webkit-slider-thumb': {
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%'
-                    },
-                    '&::-moz-range-thumb': {
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%',
-                      border: 'none'
-                    }
-                  }}
                 />
               </div>
               <div>
@@ -447,35 +471,15 @@ function Retirement() {
                   value={otherInvestments}
                   onChange={(e) => setOtherInvestments(Number(e.target.value))}
                   className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    WebkitAppearance: 'none',
-                    '&::-webkit-slider-thumb': {
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%'
-                    },
-                    '&::-moz-range-thumb': {
-                      width: '16px',
-                      height: '16px',
-                      background: '#025742',
-                      cursor: 'pointer',
-                      borderRadius: '50%',
-                      border: 'none'
-                    }
-                  }}
                 />
               </div>
             </div>
-            
+
             <p className="mt-4 text-lg font-semibold text-[#025742]">
               Total Monthly Contribution: ${totalContribution}
             </p>
           </div>
-          
+
           {/* Right column: Retirement Summary and Graphs */}
           <div className="lg:w-2/3 space-y-8">
             <div className="bg-white p-6 rounded-lg shadow">
@@ -498,7 +502,7 @@ function Retirement() {
                 </span>
               </p>
             </div>
-            
+
             {/* Graph section with switcher */}
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="flex flex-wrap justify-between items-center mb-4">
@@ -523,7 +527,7 @@ function Retirement() {
                 {graphComponents[activeGraph]}
               </div>
             </div>
-            
+
             {/* Savings Milestones Table */}
             <div className="bg-white p-6 rounded-lg shadow mt-8">
               <h3 className="text-xl font-semibold mb-4 text-[#025742]">Savings Milestones</h3>
