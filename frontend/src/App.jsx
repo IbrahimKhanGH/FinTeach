@@ -1,5 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
+import Chatbox from './components/chatbot/chatbox';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Retirement from './pages/Retirement';
@@ -13,15 +15,28 @@ import CareerStageSelection from './pages/CareerStageSelection';
 
 function App() {
   const location = useLocation();
+  const [careerStage, setCareerStage] = useState(() => localStorage.getItem('careerStage') || 'early');
+  const [isChatboxOpen, setIsChatboxOpen] = useState(false);
+
+  useEffect(() => {
+    const storedCareerStage = localStorage.getItem('careerStage');
+    if (storedCareerStage) {
+      setCareerStage(storedCareerStage);
+    }
+  }, []);
 
   // Define paths where Navbar should be displayed
   const showNavbarPaths = ['/dashboard', '/retirement', '/income-expenses', '/educationresources', '/settings'];
 
   const shouldShowNavbar = showNavbarPaths.includes(location.pathname);
 
+  const toggleChatbox = () => {
+    setIsChatboxOpen(!isChatboxOpen);
+  };
+
   return (
     <div className="flex flex-col min-h-screen w-full bg-cream">
-      {shouldShowNavbar && <Navbar />}
+      {shouldShowNavbar && <Navbar toggleChatbox={toggleChatbox} />}
 
       <main className="flex-grow w-full">
         <Routes>
@@ -37,6 +52,8 @@ function App() {
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </main>
+
+      {shouldShowNavbar && <Chatbox careerStage={careerStage} toggleChatbox={isChatboxOpen} />}
     </div>
   );
 }

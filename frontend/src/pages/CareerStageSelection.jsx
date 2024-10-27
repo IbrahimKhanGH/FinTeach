@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CareerStageSelection = () => {
+function CareerStageSelection() {
   const [careerStage, setCareerStage] = useState('early');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Store the selected career stage in localStorage
     localStorage.setItem('careerStage', careerStage);
-    // Redirect to Dashboard
     navigate('/dashboard');
   };
 
@@ -43,6 +41,6 @@ const CareerStageSelection = () => {
       </div>
     </div>
   );
-};
+}
 
 export default CareerStageSelection;

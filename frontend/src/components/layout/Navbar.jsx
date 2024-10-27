@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import fidelityLogo from "/fidelity.svg";
-import Chatbox from "../chatbot/chatbox";
 import { User, LogOut, Settings, MessageSquare } from "lucide-react";
 import greenpiggy from "/Green Piggy Bank with Graduation Cap.png";
 
-function Navbar() {
+function Navbar({ toggleChatbox }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [chatboxOpen, setChatboxOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -68,15 +66,6 @@ function Navbar() {
             <NavLink to="/income-expenses">Income/Expenses</NavLink>
             <NavLink to="/educationresources">Education Resources</NavLink>
 
-            {/* Chat button */}
-            <button
-              onClick={() => setChatboxOpen(!chatboxOpen)}
-              className="text-gray-700 hover:text-fidelity-green focus:outline-none"
-              aria-label="Chat with Assistant"
-            >
-              <MessageSquare className="h-6 w-6" />
-            </button>
-
             {/* Profile button */}
             <button
               onClick={() => setProfileMenuOpen(!profileMenuOpen)}
@@ -129,9 +118,6 @@ function Navbar() {
           </div>
         </div>
       )}
-
-      {/* Chatbox Component */}
-      {chatboxOpen && <Chatbox />}
     </nav>
   );
 }

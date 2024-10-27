@@ -690,9 +690,6 @@ function Retirement() {
           </div>
         </div>
       </div>
-
-      {/* Add this line at the end of your return statement, just before the closing div tags */}
-      <Chatbox careerStage={careerStage} /> {/* Pass careerStage as a prop */}
     </div>
   );
 }
